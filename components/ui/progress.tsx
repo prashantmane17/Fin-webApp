@@ -11,21 +11,21 @@ const Progress = React.forwardRef<
 >(({ className, value = 0, ...props }, ref) => {
   const safeValue = value ?? 0; // Ensure value is always a number
   return (
-    <ProgressPrimitive.Root
-      ref={ref}
-      className={cn(
-        "relative h-4 w-full overflow-hidden rounded-full bg-secondary",
+  <ProgressPrimitive.Root
+    ref={ref}
+    className={cn(
+      "relative h-4 w-full overflow-hidden rounded-full bg-secondary",
         className || ""
-      )}
-      {...props}
-    >
-      <ProgressPrimitive.Indicator
-        className="h-full w-full flex-1 bg-primary transition-all"
+    )}
+    {...props}
+  >
+    <ProgressPrimitive.Indicator
+      className="h-full w-full flex-1 bg-primary transition-all"
         style={{
           transform: `translateX(-${Math.min(100, Math.max(0, safeValue))}%)`,
         }}
-      />
-    </ProgressPrimitive.Root>
+    />
+  </ProgressPrimitive.Root>
   );
 });
 
