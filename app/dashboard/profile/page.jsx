@@ -1,6 +1,5 @@
 "use client";
 
-import { Sidebar } from "@/components/layout/sidebar";
 import { ProfileHeader } from "@/components/profile/profile-header";
 import { InvestmentSummary } from "@/components/profile/investment-summary";
 import { SchemeList } from "@/components/profile/scheme-list";
