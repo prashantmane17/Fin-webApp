@@ -1,16 +1,30 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { IndianRupee, LayoutDashboard, Users, PiggyBank, Calendar, Settings, HelpCircle, LogOut } from "lucide-react";
+import {
+  IndianRupee,
+  LayoutDashboard,
+  Users,
+  PiggyBank,
+  Calendar,
+  Settings,
+  HelpCircle,
+  LogOut,
+  DollarSign,
+  CircleDollarSign,
+  Dock,
+  User,
+} from "lucide-react";
+import Link from "next/link";
 
 const sidebarNavItems = [
-  { title: "Dashboard", icon: LayoutDashboard, href: "/" },
-  { title: "Members", icon: Users, href: "/members" },
-  { title: "Chit Schemes", icon: PiggyBank, href: "/schemes" },
-  { title: "Payments", icon: IndianRupee, href: "/payments" },
-  { title: "Schedule", icon: Calendar, href: "/schedule" },
+  { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
+  { title: "Loans", icon: Dock, href: "/dashboard/loans" },
+  { title: "withdrawn", icon: CircleDollarSign, href: "/dashboard/withdrawn" },
+  { title: "Payments", icon: IndianRupee, href: "/dashboard/payments" },
+  { title: "Members", icon: Users, href: "/dashboard/members" },
+  
 ];
 
 export function Sidebar({ className }) {
@@ -24,34 +38,40 @@ export function Sidebar({ className }) {
           </div>
           <div className="space-y-1">
             {sidebarNavItems.map((item) => (
-              <Button
+              <Link
                 key={item.href}
-                variant="ghost"
-                className="w-full justify-start gap-2"
+                href={item.href}
+                className="flex items-center w-full py-2 px-4 text-sm font-medium rounded-md hover:bg-accent hover:text-accent-foreground"
               >
-                <item.icon className="h-4 w-4" />
+                <item.icon className="h-4 w-4 mr-2" />
                 {item.title}
-              </Button>
+              </Link>
             ))}
           </div>
         </div>
         <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-            Support
-          </h2>
           <div className="space-y-1">
-            <Button variant="ghost" className="w-full justify-start gap-2">
-              <Settings className="h-4 w-4" />
-              Settings
-            </Button>
-            <Button variant="ghost" className="w-full justify-start gap-2">
-              <HelpCircle className="h-4 w-4" />
+            <Link
+              href="/dashboard/profile"
+              className="flex items-center w-full py-2 px-4 text-sm font-medium rounded-md hover:bg-accent hover:text-accent-foreground"
+            >
+              <User className="h-4 w-4 mr-2" />
+              Profile
+            </Link>
+            <Link
+              href="/help"
+              className="flex items-center w-full py-2 px-4 text-sm font-medium rounded-md hover:bg-accent hover:text-accent-foreground"
+            >
+              <HelpCircle className="h-4 w-4 mr-2" />
               Help & Support
-            </Button>
-            <Button variant="ghost" className="w-full justify-start gap-2 text-red-500">
-              <LogOut className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/"
+              className="flex items-center w-full py-2 px-4 text-sm font-medium rounded-md text-red-500 hover:bg-red-100 hover:text-red-600"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
               Logout
-            </Button>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,0 +1,12 @@
+import { Sidebar } from "@/components/layout/sidebar";
+
+export default function RootLayout({ children }) {
+  return (
+    <>
+      <div className="flex h-screen bg-muted/5">
+        <Sidebar className="w-64 border-r bg-background" />
+        <div className="h-screen overflow-y-auto w-full">{children}</div>
+      </div>
+    </>
+  );
+}
