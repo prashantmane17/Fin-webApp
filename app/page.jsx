@@ -41,7 +41,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="container py-24 pt-10">
+      <section className="container mx-auto py-24 pt-10">
         <div className="flex flex-col items-center text-center space-y-8">
           <div className="inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium bg-muted">
             🚀 Trusted by 1000+ businesses across India
@@ -71,7 +71,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="container py-16 space-y-16">
+      <section className="container mx-auto py-16 space-y-16">
         <div className="grid gap-8 md:grid-cols-3">
           {[
             {
@@ -116,7 +116,7 @@ export default function LandingPage() {
       </section>
 
       {/* Trust Section */}
-      <section className="container py-16 space-y-8">
+      <section className="container mx-auto py-16 space-y-8">
         <div className="text-center space-y-4">
           <h2 className="text-3xl font-bold">Why Choose ChitFund Pro?</h2>
           <p className="text-muted-foreground max-w-[600px] mx-auto">
