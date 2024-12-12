@@ -3,6 +3,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -11,33 +20,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import {
   Search,
   Filter,
-  UserPlus,
   Users,
   IndianRupee,
   Calendar,
   ChevronLeft,
   ChevronRight,
-  X,
+  LayoutGrid,
+  List,
 } from "lucide-react";
 
 // Sample data for demonstration
@@ -79,8 +72,9 @@ export default function MembersPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isNewMemberDialogOpen, setIsNewMemberDialogOpen] = useState(false);
-  const itemsPerPage = 10;
+  const [viewMode, setViewMode] = useState("list");
+
+  const itemsPerPage = viewMode === "list" ? 10 : 8;
 
   const filteredMembers = members.filter((member) => {
     const matchesSearch = member.name
@@ -97,112 +91,43 @@ export default function MembersPage() {
     currentPage * itemsPerPage
   );
 
-  const handleAddNewMember = (event) => {
-    event.preventDefault();
-    // Add logic to handle new member submission
-    setIsNewMemberDialogOpen(false);
+  const toggleViewMode = () => {
+    setViewMode(viewMode === "list" ? "card" : "list");
+    setCurrentPage(1); // Reset to first page when switching views
   };
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="p-6 border-b border-gray-200">
-        {/* <Dialog
-            open={isNewMemberDialogOpen}
-            onOpenChange={setIsNewMemberDialogOpen}
-          >
-            <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                <UserPlus className="mr-2 h-4 w-4" />
-                Add New Member
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Add New Member</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleAddNewMember} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name</Label>
-                  <Input id="fullName" placeholder="Enter full name" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="mobileNumber">Mobile Number</Label>
-                  <Input
-                    id="mobileNumber"
-                    placeholder="Enter mobile number"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter email address"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="address">Address</Label>
-                  <Input id="address" placeholder="Enter address" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="initialLoanAmount">Initial Loan Amount</Label>
-                  <Input
-                    id="initialLoanAmount"
-                    type="number"
-                    placeholder="Enter initial loan amount"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="membershipType">Membership Type</Label>
-                  <Select>
-                    <SelectTrigger id="membershipType">
-                      <SelectValue placeholder="Select membership type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="regular">Regular</SelectItem>
-                      <SelectItem value="premium">Premium</SelectItem>
-                      <SelectItem value="vip">VIP</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="pt-4 flex justify-end space-x-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setIsNewMemberDialogOpen(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
-                  >
-                    Add Member
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog> */}
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center space-x-4">
-            <div className="relative">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 space-y-4 md:space-y-0">
+          <div className="w-full md:w-auto flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-2">
+            <div className="relative w-full md:w-64">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <Input
                 placeholder="Search members..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-64"
+                className="pl-10 w-full"
               />
             </div>
+            <Button
+              onClick={toggleViewMode}
+              variant="outline"
+              className="w-full md:w-auto"
+            >
+              {viewMode === "list" ? (
+                <LayoutGrid className="mr-2 h-4 w-4" />
+              ) : (
+                <List className="mr-2 h-4 w-4" />
+              )}
+              {viewMode === "list" ? "Card View" : "List View"}
+            </Button>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center space-x-2">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-2 w-full md:w-auto">
+            <div className="flex items-center space-x-2 w-full md:w-auto">
               <Filter className="text-gray-400" />
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-40">
+                <SelectTrigger className="w-full md:w-40">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -213,84 +138,129 @@ export default function MembersPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 w-full md:w-auto">
               Total Members: {filteredMembers.length}
             </div>
           </div>
         </div>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Joining Date</TableHead>
-            <TableHead>Total Loan Amount</TableHead>
-            <TableHead>Paid Total</TableHead>
-            <TableHead>Membership Duration</TableHead>
-            <TableHead>Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {paginatedMembers.map((member) => (
-            <TableRow key={member.id}>
-              <TableCell className="font-medium">{member.name}</TableCell>
-
-              <TableCell>
-                <div className="flex items-center">
-                  <Calendar className="mr-2 h-4 w-4 text-gray-400" />
-                  {member.joinDate}
-                  {member.isNew && (
-                    <Badge className="ml-2 bg-blue-100 text-blue-800">
-                      New
-                    </Badge>
-                  )}
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center">
-                  <IndianRupee className="mr-1 h-4 w-4 text-gray-400" />
-                  {member.totalLoan.toLocaleString()}
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center">
-                  <IndianRupee className="mr-1 h-4 w-4 text-gray-400" />
-                  {member.paidTotal.toLocaleString()}
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center">
-                  <Users className="mr-2 h-4 w-4 text-gray-400" />
-                  {member.yearsStayed}{" "}
-                  {member.yearsStayed === 1 ? "year" : "years"}
-                </div>
-              </TableCell>
-              <TableCell>
-                <Badge
-                  className={cn("capitalize", {
-                    "bg-green-100 text-green-800": member.status === "active",
-                    "bg-red-100 text-red-800": member.status === "inactive",
-                    "bg-yellow-100 text-yellow-800":
-                      member.status === "pending",
-                  })}
-                >
-                  {member.status}
-                </Badge>
-              </TableCell>
+      {viewMode === "list" ? (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Joining Date</TableHead>
+              <TableHead>Total Loan Amount</TableHead>
+              <TableHead>Paid Total</TableHead>
+              <TableHead>Membership Duration</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paginatedMembers.map((member) => (
+              <TableRow key={member.id}>
+                <TableCell className="font-medium">{member.name}</TableCell>
+                <TableCell>
+                  <div className="flex items-center">
+                    <Calendar className="mr-2 h-4 w-4 text-gray-400" />
+                    {member.joinDate}
+                    {member.isNew && (
+                      <Badge className="ml-2 bg-blue-100 text-blue-800">
+                        New
+                      </Badge>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center">
+                    <IndianRupee className="mr-1 h-4 w-4 text-gray-400" />
+                    {member.totalLoan.toLocaleString()}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center">
+                    <IndianRupee className="mr-1 h-4 w-4 text-gray-400" />
+                    {member.paidTotal.toLocaleString()}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center">
+                    <Users className="mr-2 h-4 w-4 text-gray-400" />
+                    {member.yearsStayed}{" "}
+                    {member.yearsStayed === 1 ? "year" : "years"}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Badge
+                    className={cn("capitalize", {
+                      "bg-green-100 text-green-800": member.status === "active",
+                      "bg-red-100 text-red-800": member.status === "inactive",
+                      "bg-yellow-100 text-yellow-800":
+                        member.status === "pending",
+                    })}
+                  >
+                    {member.status}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-6">
+          {paginatedMembers.map((member) => (
+            <Card key={member.id} className="flex flex-col justify-between">
+              <CardContent className="pt-6">
+                <h3 className="font-semibold text-lg mb-2">{member.name}</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center">
+                    <Calendar className="mr-2 h-4 w-4 text-gray-400" />
+                    {member.joinDate}
+                    {member.isNew && (
+                      <Badge className="ml-2 bg-blue-100 text-blue-800">
+                        New
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="flex items-center">
+                    <IndianRupee className="mr-2 h-4 w-4 text-gray-400" />
+                    Total Loan: {member.totalLoan.toLocaleString()}
+                  </div>
+                  <div className="flex items-center">
+                    <IndianRupee className="mr-2 h-4 w-4 text-gray-400" />
+                    Paid: {member.paidTotal.toLocaleString()}
+                  </div>
+                  <div className="flex items-center">
+                    <Users className="mr-2 h-4 w-4 text-gray-400" />
+                    {member.yearsStayed}{" "}
+                    {member.yearsStayed === 1 ? "year" : "years"}
+                  </div>
+                  <Badge
+                    className={cn("capitalize", {
+                      "bg-green-100 text-green-800": member.status === "active",
+                      "bg-red-100 text-red-800": member.status === "inactive",
+                      "bg-yellow-100 text-yellow-800":
+                        member.status === "pending",
+                    })}
+                  >
+                    {member.status}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
           ))}
-        </TableBody>
-      </Table>
+        </div>
+      )}
 
       <div className="p-4 border-t border-gray-200">
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-500">
+        <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+          <div className="text-sm text-gray-500 order-2 md:order-1">
             Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
             {Math.min(currentPage * itemsPerPage, filteredMembers.length)} of{" "}
             {filteredMembers.length} members
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 order-1 md:order-2">
             <Button
               variant="outline"
               size="sm"
