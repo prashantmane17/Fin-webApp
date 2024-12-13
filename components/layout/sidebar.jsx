@@ -31,7 +31,7 @@ export function Sidebar({ className }) {
   return (
     <div className={cn("pb-12 min-h-screen", className)}>
       <div className="space-y-4 py-4">
-        <div className="px-3 py-2">
+        <div className=" py-2">
           <div className="flex items-center gap-2 px-4 mb-6">
             <PiggyBank className="h-6 w-6" />
             <h2 className="text-lg font-semibold">ChitFund Pro</h2>
@@ -49,7 +49,7 @@ export function Sidebar({ className }) {
             ))}
           </div>
         </div>
-        <div className="px-3 py-2">
+        <div className=" py-2">
           <div className="space-y-1">
             <Link
               href="/dashboard/profile"
