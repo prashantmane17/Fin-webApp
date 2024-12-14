@@ -12,8 +12,42 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PiggyBank, Mail, Lock } from "lucide-react";
+import { useState } from "react";
+import { verifyOwner } from "@/axios/auth";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const intialData = {
+    email: "",
+    password: "",
+  };
+  const router = useRouter();
+  const [loginData, setLoginData] = useState(intialData);
+  const [isLoading, setIsLoading] = useState(false);
+  const updateData = (e) => {
+    setLoginData((pervData) => ({
+      ...pervData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(loginData);
+      setIsLoading(true);
+      const response = await verifyOwner(loginData);
+      if (response.success) {
+        router.push("/dashboard"); // Redirect to the dashboard
+      } else {
+        console.error("Login failed:", response.message || "Unknown error");
+        alert(response.message || "Invalid login credentials!");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/50 to-background p-4">
       <Card className="w-full max-w-md">
@@ -31,7 +65,7 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <div className="relative">
@@ -41,6 +75,10 @@ export default function LoginPage() {
                   type="email"
                   placeholder="Enter your email"
                   className="pl-10"
+                  name="email"
+                  onChange={updateData}
+                  value={loginData.email}
+                  required
                 />
               </div>
             </div>
@@ -53,14 +91,20 @@ export default function LoginPage() {
                   type="password"
                   placeholder="Enter your password"
                   className="pl-10"
+                  name="password"
+                  onChange={updateData}
+                  value={loginData.password}
+                  required
                 />
               </div>
             </div>
-            <Link href="/dashboard">
-              <Button className="w-full mt-4 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90">
-                Login
-              </Button>
-            </Link>
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full mt-4 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
+            >
+              {isLoading ? "loading" : "login"}
+            </Button>
           </form>
           <div className="mt-6 text-center space-y-4">
             <div className="relative">

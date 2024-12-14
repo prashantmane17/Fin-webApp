@@ -1,14 +1,14 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import "./globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { UserProvider } from "@/context/UserContext";
 
-
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'FinApp',
-  description: 'Finanace Webapp',
+  title: "FinApp",
+  description: "Finanace Webapp",
 };
 
 export default function RootLayout({
@@ -18,8 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}
-        <Analytics/>
+      <body className={inter.className}>
+        <UserProvider>
+          {children}
+          <Analytics />
+        </UserProvider>
       </body>
     </html>
   );

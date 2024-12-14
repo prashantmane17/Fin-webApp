@@ -11,9 +11,45 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PiggyBank, User, Mail, Lock, Phone } from "lucide-react";
+import { User, Mail, Lock, Phone, Building2, PiggyBank } from "lucide-react";
+import { addOwners } from "@/axios/auth";
+import { useState } from "react";
 
 export default function SignUpPage() {
+  const intialData = {
+    name: "",
+    email: "",
+    phone: "",
+    companyName: "",
+    password: "",
+  };
+  const [userData, setUserData] = useState(intialData);
+  const [isloading, setIsLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const setformData = (e) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (userData.password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    try {
+      setIsLoading(true);
+      console.log(userData);
+      await addOwners(userData);
+    } catch (error) {
+      console.log("error----", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/50 to-background p-4">
       <Card className="w-full max-w-md">
@@ -29,21 +65,20 @@ export default function SignUpPage() {
           <CardDescription>Enter your details to get started</CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input id="firstName" placeholder="John" className="pl-10" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input id="lastName" placeholder="Doe" className="pl-10" />
-                </div>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <div className="space-y-2">
+              <Label htmlFor="email">Full Name</Label>
+              <div className="relative">
+                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="Name"
+                  type="text"
+                  placeholder="Enter Your Name"
+                  className="pl-10"
+                  name="name"
+                  value={userData.name}
+                  onChange={setformData}
+                />
               </div>
             </div>
             <div className="space-y-2">
@@ -55,6 +90,9 @@ export default function SignUpPage() {
                   type="email"
                   placeholder="john@example.com"
                   className="pl-10"
+                  name="email"
+                  value={userData.email}
+                  onChange={setformData}
                 />
               </div>
             </div>
@@ -67,6 +105,24 @@ export default function SignUpPage() {
                   type="tel"
                   placeholder="+91 98765 43210"
                   className="pl-10"
+                  name="phone"
+                  value={userData.phone}
+                  onChange={setformData}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Company Name</Label>
+              <div className="relative">
+                <Building2 className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="companyName"
+                  type="text"
+                  placeholder="Enter Company Name"
+                  className="pl-10"
+                  name="companyName"
+                  value={userData.companyName}
+                  onChange={setformData}
                 />
               </div>
             </div>
@@ -79,6 +135,9 @@ export default function SignUpPage() {
                   type="password"
                   placeholder="Create a password"
                   className="pl-10"
+                  name="password"
+                  value={userData.password}
+                  onChange={setformData}
                 />
               </div>
             </div>
@@ -91,14 +150,19 @@ export default function SignUpPage() {
                   type="password"
                   placeholder="Confirm your password"
                   className="pl-10"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </div>
             </div>
-            <Link href="/dashboard">
-              <Button className="w-full mt-4 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90">
-                Create Account
-              </Button>
-            </Link>
+
+            <Button
+              type="submit"
+              disabled={isloading}
+              className="w-full mt-4 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
+            >
+              {isloading ? "Creating Account..." : "Create Account"}
+            </Button>
           </form>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
