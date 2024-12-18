@@ -62,6 +62,11 @@ const userLoanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Owner",
+    required: true,
+  },
 });
 const UserLoanData =
   mongoose.model.UserLoan || mongoose.model("UserLoan", userLoanSchema);
