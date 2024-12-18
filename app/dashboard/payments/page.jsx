@@ -46,7 +46,7 @@ const calculateProgress = (totalPaid, loanAmount) => {
 // Components
 function PaymentCard({ date, amount, status, borrower, paymentMethod }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4 mb-3 hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-lg shadow-sm p-4 mb-3 hover:shadow-md transition-shadow w-[100%]">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between">
         <div className="mb-2 sm:mb-0">
           <p className="text-sm text-gray-500">{formatDate(date)}</p>
@@ -167,7 +167,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-3xl mx-auto">
+      <div className="mx-auto">
         <div className="mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Loan Payment Tracker</h1>
           <p className="text-gray-600 mt-1">Monitor loan payments and progress</p>
