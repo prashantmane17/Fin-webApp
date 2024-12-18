@@ -37,7 +37,7 @@ export default function LoginPage() {
       setIsLoading(true);
       const response = await verifyOwner(loginData);
       if (response.success) {
-        router.push("/dashboard"); // Redirect to the dashboard
+        router.push("/dashboard");
       } else {
         console.error("Login failed:", response.message || "Unknown error");
         alert(response.message || "Invalid login credentials!");
@@ -103,7 +103,7 @@ export default function LoginPage() {
               disabled={isLoading}
               className="w-full mt-4 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
             >
-              {isLoading ? "loading" : "login"}
+              {isLoading ? "logging in" : "login"}
             </Button>
           </form>
           <div className="mt-6 text-center space-y-4">

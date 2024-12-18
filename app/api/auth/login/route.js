@@ -29,11 +29,10 @@ export async function POST(request) {
         name: userExits.name,
         comapanyName: userExits.comapanyName,
       },
-      process.env.JWT_SECRET, // Ensure JWT_SECRET is defined in your .env
-      { expiresIn: "1w" } // Token expiration (1 week)
+      process.env.JWT_SECRET,
+      { expiresIn: "1w" }
     );
 
-    // Set the token in a cookie
     const response = NextResponse.json(
       {
         success: true,
@@ -46,8 +45,8 @@ export async function POST(request) {
 
     response.cookies.set("authToken", token, {
       httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Set to true for production
-      maxAge: 7 * 24 * 60 * 60, // 1 week in seconds
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60,
       path: "/",
     });
 
