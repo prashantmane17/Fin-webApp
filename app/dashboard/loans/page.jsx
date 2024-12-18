@@ -26,19 +26,18 @@ import {
   ChevronLeft,
   ChevronRight,
   PhoneCall,
-  User,
 } from "lucide-react";
 import { AddLoanModal } from "@/components/model/loan_model";
 
 // Sample data
 const sampleLoans = [
   {
-    id: "LN-33698",
+    loanId: "LN-33698",
     customerId: "CUST-49593",
-    customerName: "Navin J",
-    phoneNumber: "8431187297",
-    amount: 30000.0,
-    installments: 0,
+    name: "Navin J",
+    phone: "8431187297",
+    loanAmount: 30000.0,
+    totalInstallment: 0,
     nextPayment: {
       amount: 6550.64,
       date: "30-Dec-2024",
@@ -47,92 +46,38 @@ const sampleLoans = [
     status: "Completed",
   },
   {
-    id: "LN-25905",
-    customerId: "VED-0401",
-    customerName: "Harish F",
-    phoneNumber: "9363145394",
-    amount: 20000.0,
-    installments: 6,
+    loanId: "LN-33698",
+    customerId: "CUST-49593",
+    name: "Navin J",
+    phone: "8431187297",
+    loanAmount: 30000.0,
+    totalInstallment: 0,
     nextPayment: {
-      amount: 1891.19,
-      date: "08-Jan-2025",
-      status: "Due",
+      amount: 6550.64,
+      date: "30-Dec-2024",
+      status: "Paid",
     },
-    status: "Active",
+    status: "Completed",
   },
   {
-    id: "23443",
-    customerId: "VED-0401",
-    customerName: "Harish F",
-    phoneNumber: "9363145394",
-    amount: 20000.0,
-    installments: 10,
+    loanId: "LN-33698",
+    customerId: "CUST-49593",
+    name: "Navin J",
+    phone: "8431187297",
+    loanAmount: 30000.0,
+    totalInstallment: 0,
     nextPayment: {
-      amount: 1891.19,
-      date: "10-Jan-2025",
-      status: "Due",
+      amount: 6550.64,
+      date: "30-Dec-2024",
+      status: "Paid",
     },
-    status: "Active",
+    status: "Completed",
   },
-  {
-    id: "4334",
-    customerId: "2131",
-    customerName: "Amar",
-    phoneNumber: "9362541263",
-    amount: 1000.0,
-    installments: 1,
-    nextPayment: {
-      amount: 329.23,
-      date: "19-Jan-2025",
-      status: "Due",
-    },
-    status: "Active",
-  },
-  {
-    id: "4334",
-    customerId: "2131",
-    customerName: "Amar",
-    phoneNumber: "9362541263",
-    amount: 1000.0,
-    installments: 1,
-    nextPayment: {
-      amount: 329.23,
-      date: "19-Jan-2025",
-      status: "Due",
-    },
-    status: "Active",
-  },
-  {
-    id: "4334",
-    customerId: "2131",
-    customerName: "Amar",
-    phoneNumber: "9362541263",
-    amount: 1000.0,
-    installments: 1,
-    nextPayment: {
-      amount: 329.23,
-      date: "19-Jan-2025",
-      status: "Due",
-    },
-    status: "Active",
-  },
-  {
-    id: "4334",
-    customerId: "2131",
-    customerName: "Amar",
-    phoneNumber: "9362541263",
-    amount: 1000.0,
-    installments: 1,
-    nextPayment: {
-      amount: 329.23,
-      date: "19-Jan-2025",
-      status: "Due",
-    },
-    status: "Active",
-  },
+ 
 ];
 
 export default function App() {
+  const [loadLoans, setLoadLoans] = useState(sampleLoans);
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("25");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -141,10 +86,10 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Filter loans based on search term and status
-  const filteredLoans = sampleLoans.filter((loan) => {
+  const filteredLoans = loadLoans.filter((loan) => {
     const matchesSearch =
-      loan.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      loan.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      loan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      loan.loanId.toLowerCase().includes(searchTerm.toLowerCase()) ||
       loan.customerId.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus =
@@ -201,6 +146,7 @@ export default function App() {
           <AddLoanModal
             open={isModalOpen}
             onClose={() => setIsModalOpen(false)}
+            setloan={setLoadLoans}
           />
         </div>
 
@@ -280,11 +226,11 @@ export default function App() {
                   <TableCell>
                     <div>
                       <div className="font-medium text-blue-600">
-                        {loan.customerName}
+                        {loan.name}
                       </div>
                       <div className="text-sm text-gray-500 flex items-center">
                         <PhoneCall className="w-4 h-4 text-green-600 mr-1" />
-                        {loan.phoneNumber}
+                        {loan.phone}
                       </div>
                     </div>
                   </TableCell>
@@ -294,8 +240,8 @@ export default function App() {
                     {loan.customerId}
                     {/* </div> */}
                   </TableCell>
-                  <TableCell>{loan.id}</TableCell>
-                  <TableCell>₹ {loan.amount.toLocaleString()}</TableCell>
+                  <TableCell>{loan.loanId}</TableCell>
+                  <TableCell>₹ {loan.loanAmount.toLocaleString()}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
                       <svg
@@ -305,7 +251,7 @@ export default function App() {
                       >
                         <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
                       </svg>
-                      {loan.installments}
+                      {loan.totalInstallment}
                     </div>
                   </TableCell>
                   <TableCell>

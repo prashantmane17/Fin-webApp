@@ -14,11 +14,11 @@ const userLoanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  phone: {
+  email: {
     type: String,
     required: true,
   },
-  email: {
+  phone: {
     type: String,
     required: true,
   },
@@ -26,19 +26,19 @@ const userLoanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  processFee: {
+  processingFee: {
     type: String,
-    required: true,
+    required: true, // Changed from 'processFee' to match the initial data field
   },
   interest: {
     type: String,
     required: true,
   },
-  repaymentMethod: {
+  totalInstallment: {
     type: String,
-    required: true,
+    required: true, // Added to match 'totalInstallment' in the data
   },
-  installMent: {
+  installmentAmount: {
     type: String,
     required: true,
   },
@@ -46,19 +46,19 @@ const userLoanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  installmentAmount: {
+  approvalDate: {
+    type: Date,
+    required: true, // Changed from 'loanApprovalDate' to 'approvalDate'
+  },
+  repaymentStartDate: {
+    type: Date,
+    required: true, // Changed from 'repaymentDate' to 'repaymentStartDate'
+  },
+  paymentMethod: {
     type: String,
     required: true,
   },
-  loanApprovalDate: {
-    type: Date,
-    required: true,
-  },
-  repaymentDate: {
-    type: Date,
-    required: true,
-  },
-  paymentMethod: {
+  repaymentMethod: {
     type: String,
     required: true,
   },
@@ -68,7 +68,9 @@ const userLoanSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+// Check if the model is already registered
 const UserLoanData =
-  mongoose.model.UserLoan || mongoose.model("UserLoan", userLoanSchema);
+  mongoose.models.UserLoan || mongoose.model("UserLoan", userLoanSchema);
 
 export default UserLoanData;

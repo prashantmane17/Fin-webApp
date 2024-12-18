@@ -25,10 +25,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-// import { toast } from "@/components/ui/use-toast";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Bounce } from "react-toastify";
 
-export function AddLoanModal({ open, onClose }) {
-  const [formData, setFormData] = useState({
+import { addLoanDetails } from "@/axios/loanApi";
+
+export function AddLoanModal({ open, onClose, setloan }) {
+  let intialData = {
     name: "",
     customerId: "",
     loanId: "",
@@ -44,7 +48,9 @@ export function AddLoanModal({ open, onClose }) {
     repaymentStartDate: new Date(),
     paymentMethod: "",
     repaymentMethod: "monthly",
-  });
+    owner: "60f3d9be5b7c1d30f8e7f5a9",
+  };
+  const [formData, setFormData] = useState(intialData);
 
   const calculateInstallmentAmount = () => {
     const amount = parseFloat(formData.loanAmount) || 0;
@@ -53,7 +59,6 @@ export function AddLoanModal({ open, onClose }) {
     const advance = parseFloat(formData.advancePayment) || 0;
     const interestRate = parseFloat(formData.interest) || 0;
 
-    // Calculate yearly interest rate based on repayment method
     let yearlyRate = 0;
     switch (formData.repaymentMethod) {
       case "daily":
@@ -94,34 +99,48 @@ export function AddLoanModal({ open, onClose }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch("/api/submitLoan", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        toast({
-          title: "Success",
-          description: "Loan data submitted successfully",
-          variant: "default",
+      const response = await addLoanDetails(formData);
+      setloan((prevLoans) => [...prevLoans, formData]);
+      if (response.success) {
+        setFormData(intialData);
+        toast.success("loan added SuccessFully!!..", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
         });
+
         onClose();
       } else {
-        toast({
-          title: "Error",
-          description: "Failed to submit loan data",
-          variant: "destructive",
+        toast.error("Failed to submit loan data", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
         });
       }
     } catch (error) {
       console.error("Error submitting loan data:", error);
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred",
-        variant: "destructive",
+      toast.error("An unexpected error occurred", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
       });
     }
   };
