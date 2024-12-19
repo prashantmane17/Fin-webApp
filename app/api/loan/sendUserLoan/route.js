@@ -1,6 +1,6 @@
+import db_Connect from "@/helper/dbConnect";
+import UserLoanData from "@/model/loanSchema";
 import { NextResponse } from "next/server";
-import db_Connect from "../../../../helper/dbConnect";
-import UserLoanData from "../../../../model/loanSchema";
 
 export async function POST(request) {
   await db_Connect();
@@ -25,7 +25,7 @@ export async function POST(request) {
       owner,
     } = await request.json();
 
-    console.log()
+    console.log();
     const newLoan = new UserLoanData({
       name,
       customerId,

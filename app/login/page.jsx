@@ -15,6 +15,7 @@ import { PiggyBank, Mail, Lock } from "lucide-react";
 import { useState } from "react";
 import { verifyOwner } from "@/axios/auth";
 import { useRouter } from "next/navigation";
+import { useUser } from "../../context/UserContext";
 
 export default function LoginPage() {
   const intialData = {
@@ -24,6 +25,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [loginData, setLoginData] = useState(intialData);
   const [isLoading, setIsLoading] = useState(false);
+  const { fetchUserData } = useUser();
   const updateData = (e) => {
     setLoginData((pervData) => ({
       ...pervData,
@@ -36,8 +38,10 @@ export default function LoginPage() {
       console.log(loginData);
       setIsLoading(true);
       const response = await verifyOwner(loginData);
+
       if (response.success) {
         router.push("/dashboard");
+        fetchUserData();
       } else {
         console.error("Login failed:", response.message || "Unknown error");
         alert(response.message || "Invalid login credentials!");

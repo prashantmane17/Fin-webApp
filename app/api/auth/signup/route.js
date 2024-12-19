@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import Owner from "../../../../model/userSchema";
-import db_Connect from "../../../../helper/dbConnect";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import db_Connect from "@/helper/dbConnect";
+import Owner from "@/model/userSchema";
 
 // export const dynamic = "force-dynamic"; // Ensures the route is treated as dynamic
 

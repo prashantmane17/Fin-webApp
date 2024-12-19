@@ -14,6 +14,7 @@ import {
 import { User, Mail, Lock, Phone, Building2, PiggyBank } from "lucide-react";
 import { addOwners } from "@/axios/auth";
 import { useState } from "react";
+import { useUser } from "../../context/UserContext";
 
 export default function SignUpPage() {
   const intialData = {
@@ -26,6 +27,7 @@ export default function SignUpPage() {
   const [userData, setUserData] = useState(intialData);
   const [isloading, setIsLoading] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { fetchUserData } = useUser();
 
   const setformData = (e) => {
     setUserData((prevData) => ({
@@ -44,6 +46,7 @@ export default function SignUpPage() {
       setIsLoading(true);
       console.log(userData);
       await addOwners(userData);
+      fetchUserData();
     } catch (error) {
       console.log("error----", error);
     } finally {

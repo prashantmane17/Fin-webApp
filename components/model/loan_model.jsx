@@ -30,8 +30,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { Bounce } from "react-toastify";
 
 import { addLoanDetails } from "@/axios/loanApi";
+import { useUser } from "@/context/UserContext";
 
-export function AddLoanModal({ open, onClose, setloan }) {
+export function AddLoanModal({ open, onClose, setloan, ownerid }) {
+  const { setLoanData, userData } = useUser();
+  const userIdString = String(userData.id);
   let intialData = {
     name: "",
     customerId: "",
@@ -48,10 +51,9 @@ export function AddLoanModal({ open, onClose, setloan }) {
     repaymentStartDate: new Date(),
     paymentMethod: "",
     repaymentMethod: "monthly",
-    owner: "60f3d9be5b7c1d30f8e7f5a9",
+    owner: userIdString,
   };
   const [formData, setFormData] = useState(intialData);
-
   const calculateInstallmentAmount = () => {
     const amount = parseFloat(formData.loanAmount) || 0;
     const fee = parseFloat(formData.processingFee) || 0;
@@ -98,10 +100,20 @@ export function AddLoanModal({ open, onClose, setloan }) {
   const { yearlyRate } = calculateInstallmentAmount();
 
   const handleSubmit = async () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      owner: ownerid,
+    }));
     try {
       const response = await addLoanDetails(formData);
-      setloan((prevLoans) => [...prevLoans, formData]);
+
       if (response.success) {
+        setLoanData((prevLoans) =>
+          Array.isArray(prevLoans)
+            ? [...prevLoans, response.data]
+            : [response.data]
+        );
+        // console.log(response.data);
         setFormData(intialData);
         toast.success("loan added SuccessFully!!..", {
           position: "top-center",

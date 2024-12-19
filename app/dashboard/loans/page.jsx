@@ -28,56 +28,14 @@ import {
   PhoneCall,
 } from "lucide-react";
 import { AddLoanModal } from "@/components/model/loan_model";
-
+import { useUser } from "@/context/UserContext";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 // Sample data
-const sampleLoans = [
-  {
-    loanId: "LN-33698",
-    customerId: "CUST-49593",
-    name: "Navin J",
-    phone: "8431187297",
-    loanAmount: 30000.0,
-    totalInstallment: 0,
-    nextPayment: {
-      amount: 6550.64,
-      date: "30-Dec-2024",
-      status: "Paid",
-    },
-    status: "Completed",
-  },
-  {
-    loanId: "LN-33698",
-    customerId: "CUST-49593",
-    name: "Navin J",
-    phone: "8431187297",
-    loanAmount: 30000.0,
-    totalInstallment: 0,
-    nextPayment: {
-      amount: 6550.64,
-      date: "30-Dec-2024",
-      status: "Paid",
-    },
-    status: "Completed",
-  },
-  {
-    loanId: "LN-33698",
-    customerId: "CUST-49593",
-    name: "Navin J",
-    phone: "8431187297",
-    loanAmount: 30000.0,
-    totalInstallment: 0,
-    nextPayment: {
-      amount: 6550.64,
-      date: "30-Dec-2024",
-      status: "Paid",
-    },
-    status: "Completed",
-  },
- 
-];
 
 export default function App() {
-  const [loadLoans, setLoadLoans] = useState(sampleLoans);
+  const { loanisLoading, loanData, userData } = useUser();
+  const [loadLoans, setLoadLoans] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("25");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -85,12 +43,10 @@ export default function App() {
   const [totalPages, setTotalPages] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Filter loans based on search term and status
-  const filteredLoans = loadLoans.filter((loan) => {
-    const matchesSearch =
-      loan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      loan.loanId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      loan.customerId.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredLoans = loanData.filter((loan) => {
+    const matchesSearch = loan.name
+      .toLowerCase()
+      .startsWith(searchTerm.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all"
@@ -143,10 +99,12 @@ export default function App() {
             <Plus className="w-4 h-4 mr-2" />
             Add Loan
           </Button>
+          {}
           <AddLoanModal
             open={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             setloan={setLoadLoans}
+            ownerid={userData.id}
           />
         </div>
 
@@ -174,6 +132,7 @@ export default function App() {
                   className="pl-9 w-[300px]"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  ownerid={userData.id}
                 />
               </div>
             </div>
@@ -218,8 +177,66 @@ export default function App() {
               </TableRow>
             </TableHeader>
             <TableBody>
+              {loanisLoading &&
+                Array.from({ length: 3 }).map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Skeleton circle height={16} width={16} />
+                    </TableCell>
+                    <TableCell>
+                      <div>
+                        <div className="font-medium">
+                          <Skeleton width={100} />
+                        </div>
+                        <div className="text-sm flex items-center">
+                          <Skeleton
+                            circle
+                            height={16}
+                            width={16}
+                            className="mr-1"
+                          />
+                          <Skeleton width={90} />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width={80} />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width={90} />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width={80} />
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <Skeleton circle height={16} width={16} />
+                        <Skeleton width={50} />
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="relative">
+                        <div className="font-medium">
+                          <Skeleton width={70} />
+                        </div>
+                        <div className="text-sm">
+                          <Skeleton width={120} />
+                        </div>
+                        <div className="text-xs font-semibold absolute top-0 right-0">
+                          <Skeleton width={50} height={15} />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width={70} height={25} />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width={50} height={30} />
+                    </TableCell>
+                  </TableRow>
+                ))}
               {getCurrentPageItems().map((loan) => (
-                <TableRow key={loan.id}>
+                <TableRow key={loan.loanId}>
                   <TableCell>
                     <input type="checkbox" className="rounded" />
                   </TableCell>
@@ -257,20 +274,20 @@ export default function App() {
                   <TableCell>
                     <div className="relative">
                       <div className="font-medium">
-                        ₹ {loan.nextPayment.amount.toLocaleString()}
+                        ₹ {loan.installmentAmount}
                       </div>
                       <div className="text-sm text-gray-500">
-                        {loan.nextPayment.date}
+                        {loan.repaymentStartDate}
                       </div>
                       <div
                         className={cn(
                           "text-xs font-semibold absolute top-0 right-0 px-[3px] py-[1px] rounded",
-                          loan.nextPayment.status === "Paid"
+                          loan.paymentStatus === "Paid"
                             ? "text-green-800 bg-green-100"
                             : "text-red-800 bg-red-100"
                         )}
                       >
-                        {loan.nextPayment.status}
+                        {loan.paymentStatus}
                       </div>
                     </div>
                   </TableCell>
@@ -297,11 +314,6 @@ export default function App() {
               ))}
             </TableBody>
           </Table>
-          {filteredLoans.length === 0 && (
-            <div className="p-4 text-center text-gray-500">
-              No records found
-            </div>
-          )}
         </div>
 
         {/* Pagination */}

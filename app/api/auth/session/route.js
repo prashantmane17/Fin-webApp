@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import db_Connect from "../../../../helper/dbConnect";
+import db_Connect from "@/helper/dbConnect";
 
 export async function GET(request) {
   await db_Connect();

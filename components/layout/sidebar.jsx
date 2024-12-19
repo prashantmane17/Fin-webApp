@@ -1,17 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   IndianRupee,
   LayoutDashboard,
   Users,
   PiggyBank,
-  Calendar,
-  Settings,
-  HelpCircle,
   LogOut,
-  DollarSign,
   CircleDollarSign,
   Dock,
   User,
@@ -24,7 +19,6 @@ const sidebarNavItems = [
   { title: "withdrawn", icon: CircleDollarSign, href: "/dashboard/withdrawn" },
   { title: "Payments", icon: IndianRupee, href: "/dashboard/payments" },
   { title: "Members", icon: Users, href: "/dashboard/members" },
-  
 ];
 
 export function Sidebar({ className }) {
@@ -58,15 +52,9 @@ export function Sidebar({ className }) {
               <User className="h-4 w-4 mr-2" />
               Profile
             </Link>
+
             <Link
-              href="/help"
-              className="flex items-center w-full py-2 px-4 text-sm font-medium rounded-md hover:bg-accent hover:text-accent-foreground"
-            >
-              <HelpCircle className="h-4 w-4 mr-2" />
-              Help & Support
-            </Link>
-            <Link
-              href="/"
+              href="/login"
               className="flex items-center w-full py-2 px-4 text-sm font-medium rounded-md text-red-500 hover:bg-red-100 hover:text-red-600"
             >
               <LogOut className="h-4 w-4 mr-2" />

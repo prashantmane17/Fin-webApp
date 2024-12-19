@@ -8,10 +8,10 @@ const userLoanSchema = new mongoose.Schema({
   customerId: {
     type: String,
     required: true,
-    unique: true,
   },
   loanId: {
     type: String,
+    unique: true,
     required: true,
   },
   email: {
@@ -65,7 +65,6 @@ const userLoanSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Owner",
-    required: true,
   },
 });
 

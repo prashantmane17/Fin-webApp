@@ -24,10 +24,12 @@ import {
 import { StatCard } from "@/components/dashboard/stats-card";
 import { LineChartCard } from "@/components/dashboard/analytics/line-chart";
 import { PieChartCard } from "@/components/dashboard/analytics/pie-chart";
+import { useUser } from "../../context/UserContext";
 
 export default function Dashboard() {
   const [timeFilter, setTimeFilter] = useState("this_year");
-
+  const { userData } = useUser();
+  console.log("fetchUserData-------", userData);
   return (
     <main className="min-h-screen bg-background p-8">
       <div className="max-w-[1400px] mx-auto space-y-8">

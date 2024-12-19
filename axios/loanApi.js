@@ -8,3 +8,12 @@ export const addLoanDetails = async (loanInfo) => {
     console.log("error:----", error);
   }
 };
+
+export const loadLoanData = async (id) => {
+  try {
+    const response = await api.get(`/loan/getLoanDetails/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log("error:----", error);
+  }
+};
