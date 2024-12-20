@@ -24,12 +24,26 @@ import {
 import { StatCard } from "@/components/dashboard/stats-card";
 import { LineChartCard } from "@/components/dashboard/analytics/line-chart";
 import { PieChartCard } from "@/components/dashboard/analytics/pie-chart";
-import { useUser } from "../../context/UserContext";
+import { useInvestment } from "@/context/InvestmentContext";
 
 export default function Dashboard() {
   const [timeFilter, setTimeFilter] = useState("this_year");
-  const { userData } = useUser();
-  console.log("fetchUserData-------", userData);
+  const { investmentData, loading } = useInvestment();
+  let investment = [];
+  let withdraws = [];
+  if (!loading) {
+    console.log("inves----", investmentData);
+    investment = investmentData.investments;
+    withdraws = investmentData.withdrawals;
+  }
+  const totalInvestment = investment.reduce(
+    (total, item) => total + parseInt(item.amount, 10),
+    0
+  );
+  const totalWithdraws = withdraws.reduce(
+    (total, item) => total + parseInt(item.amount, 10),
+    0
+  );
   return (
     <main className="min-h-screen bg-background p-8">
       <div className="max-w-[1400px] mx-auto space-y-8">
@@ -57,14 +71,14 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <StatCard
             title="Total Capital"
-            value="500,000.00"
+            value={totalInvestment}
             icon={Wallet}
             iconBgColor="bg-blue-100"
             iconColor="text-blue-600"
           />
           <StatCard
             title="Available Credit"
-            value="250,000.00"
+            value={totalInvestment-totalWithdraws}
             icon={PiggyBank}
             iconBgColor="bg-green-100"
             iconColor="text-green-600"

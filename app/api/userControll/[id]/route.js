@@ -23,11 +23,12 @@ export async function GET(request, { params }) {
       );
     }
 
-    const { investAmount, withdrawnAmount } = user;
+    const { email, investAmount, withdrawnAmount } = user;
 
     return NextResponse.json(
       {
         success: true,
+        email: email,
         investments: investAmount,
         withdrawals: withdrawnAmount,
       },

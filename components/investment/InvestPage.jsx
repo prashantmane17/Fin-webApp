@@ -27,72 +27,34 @@ import {
   ChevronRight,
   PhoneCall,
   User,
+  Calendar,
+  IndianRupee,
 } from "lucide-react";
-import { AddLoanModal } from "@/components/model/loan_model";
-
-// Sample data
-const sampleLoans = [
-  {
-    id: "LN-33698",
-    customerId: "CUST-49593",
-    customerName: "Navin J",
-    phoneNumber: "8431187297",
-    amount: 30000.0,
-    installments: 0,
-    remarks: "No",
-    nextPayment: {
-      amount: 6550.64,
-      date: "30-Dec-2024",
-      status: "Paid",
-    },
-    status: "Completed",
-  },
-  {
-    id: "LN-25905",
-    customerId: "VED-0401",
-    customerName: "Harish F",
-    phoneNumber: "9363145394",
-    amount: 20000.0,
-    remarks: "--",
-    installments: 6,
-    nextPayment: {
-      amount: 1891.19,
-      date: "08-Jan-2025",
-      status: "Due",
-    },
-    status: "Active",
-  },
-  {
-    id: "23443",
-    customerId: "VED-0401",
-    customerName: "Harish F",
-    phoneNumber: "9363145394",
-    amount: 20000.0,
-    remarks: "No Remarks",
-    installments: 10,
-    nextPayment: {
-      amount: 1891.19,
-      date: "10-Jan-2025",
-      status: "Due",
-    },
-    status: "Active",
-  },
-];
+import { useInvestment } from "../../context/InvestmentContext";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { invest_Withdraw } from "@/axios/investWithdraw";
 
 export default function Invest() {
+  const intialData = { amount: "", remark: "", date: "" };
+  const [formData, setFormData] = useState(intialData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("25");
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setInvestmentData, investmentData, loading } = useInvestment();
+  let investments = [];
+  if (!loading) {
+    investments = investmentData.investments;
+  }
 
-  // Filter loans based on search term and status
-  const filteredLoans = sampleLoans.filter((loan) => {
-    const matchesSearch =
-      loan.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      loan.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      loan.customerId.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredLoans = investments.filter((loan) => {
+    const matchesSearch = loan.remark
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all"
@@ -105,13 +67,53 @@ export default function Invest() {
   useEffect(() => {
     setTotalPages(Math.ceil(filteredLoans.length / parseInt(entriesPerPage)));
   }, [filteredLoans, entriesPerPage]);
-
   const getCurrentPageItems = () => {
     const startIndex = (currentPage - 1) * parseInt(entriesPerPage);
     const endIndex = startIndex + parseInt(entriesPerPage);
     return filteredLoans.slice(startIndex, endIndex);
   };
+  function formatDate(dateString) {
+    const date = new Date(dateString);
 
+    const day = date.getDate();
+    const month = date.toLocaleString("en-GB", { month: "short" });
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    if (!formData.amount || !formData.date) {
+      setIsSubmitting(false);
+      return;
+    }
+    const email = investmentData.email;
+    const requestData = {
+      email,
+      investments: {
+        ...formData, // Spread form data into the investment object
+      },
+    };
+    try {
+      const response = await invest_Withdraw(requestData);
+      if (response.success) {
+        setIsSubmitting(false);
+        setIsModalOpen(false);
+        setInvestmentData((prevData) => {
+          const updatedWithdrawals = [...prevData.investments, formData];
+          return {
+            ...prevData,
+            investments: updatedWithdrawals,
+          };
+        });
+      }
+    } catch (error) {}
+  };
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
       <div
@@ -145,10 +147,103 @@ export default function Invest() {
             <Plus className="w-4 h-4 mr-2" />
             Investment
           </Button>
-          <AddLoanModal
-            open={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-          />
+          {isModalOpen && (
+            <div className="modal fixed top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center">
+              <div className="bg-white rounded-lg shadow-lg w-1/2 p-6">
+                <div className="flex justify-between items-center mb-4 border-b pb-2">
+                  <h2 className="text-xl flex items-center gap-3 font-semibold text-gray-800">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 10.5v6m3-3H9m4.06-7.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
+                      ></path>
+                    </svg>
+                    <span>Add Investment</span>
+                  </h2>
+                  <Button
+                    onClick={() => setIsModalOpen(false)}
+                    className="text-gray-600 hover:text-gray-800 text-2xl transition-colors bg-white hover:bg-white"
+                  >
+                    ×
+                  </Button>
+                </div>
+                <form onSubmit={handleSubmit}>
+                  <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+                    <div className="form-group">
+                      <label
+                        htmlFor="newInvestedAmt"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Amount <span className="text-red-600">*</span>
+                      </label>
+                      <Input
+                        id="newInvestedAmt"
+                        name="amount"
+                        className="mt-1 border border-gray-300 rounded-lg w-full py-1 px-3 focus:outline-none  focus:border-indigo-500"
+                        placeholder="Enter the amount"
+                        required=""
+                        value={formData.amount}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label
+                        htmlFor="comments"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Remarks
+                      </label>
+                      <textarea
+                        id="comments"
+                        name="remark"
+                        className="block w-full px-4 py-4 border rounded-md shadow-sm capitalize focus:outline-none  focus:border-indigo-500"
+                        placeholder="Optional"
+                        value={formData.remark}
+                        onChange={handleChange}
+                      ></textarea>
+                    </div>
+
+                    <div className="form-group">
+                      <label
+                        htmlFor="date"
+                        className="block text-sm font-medium text-gray-700 "
+                      >
+                        Date <span className="text-red-600">*</span>
+                      </label>
+                      <Input
+                        id="invest-date"
+                        type="date"
+                        name="date"
+                        className="block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        required
+                        value={formData.date}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end mt-6">
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors"
+                    >
+                      {isSubmitting ? "Submitting..." : "Submit"}
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Filters */}
@@ -206,7 +301,7 @@ export default function Invest() {
             <TableHeader className="sticky top-0 z-10">
               <TableRow>
                 <TableHead className="w-[30px]">
-                  <input type="checkbox" className="rounded" />
+                  <Input type="checkbox" />
                 </TableHead>
                 <TableHead>DATE</TableHead>
                 <TableHead>AMOUNT</TableHead>
@@ -214,14 +309,41 @@ export default function Invest() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {getCurrentPageItems().map((loan) => (
-                <TableRow key={loan.id}>
+              {loading &&
+                [...Array(2)].map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Input type="checkbox" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width={136} />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width={80} />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width={120} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              {getCurrentPageItems().map((loan, index) => (
+                <TableRow key={index}>
                   <TableCell>
-                    <input type="checkbox" className="rounded" />
+                    <Input type="checkbox" />
                   </TableCell>
-                  <TableCell>{loan.nextPayment.date}</TableCell>
-                  <TableCell>{loan.nextPayment.amount}</TableCell>
-                  <TableCell>{loan.remarks}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center">
+                      <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+                      {formatDate(loan.date)}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center">
+                      <IndianRupee className="w-4 h-4 mr-1 text-gray-500" />
+                      {loan.amount}
+                    </div>
+                  </TableCell>
+                  <TableCell>{loan.remark}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

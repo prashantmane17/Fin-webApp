@@ -5,7 +5,7 @@ import Owner from "@/model/userSchema";
 export async function PUT(request) {
   await db_Connect();
 
-  const { email, investment, withdrawal } = await request.json();
+  const { email, investments, withdrawal } = await request.json();
 
   try {
     const user = await Owner.findOne({ email });
@@ -17,11 +17,11 @@ export async function PUT(request) {
       );
     }
 
-    if (investment) {
+    if (investments) {
       user.investAmount.push({
-        date: investment.date || new Date(),
-        amount: investment.amount || "0",
-        remark: investment.remark || "",
+        date: investments.date || new Date(),
+        amount: investments.amount || "0",
+        remark: investments.remark || "",
       });
     }
 

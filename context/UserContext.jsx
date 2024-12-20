@@ -39,11 +39,9 @@ export function UserProvider({ children }) {
           companyName: data.user.companyName || null,
         });
       } else {
-        console.warn("No valid user data received:", data);
         setUserData(initialData);
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
       setUserData(initialData);
     } finally {
       setIsLoading(false);
@@ -52,7 +50,6 @@ export function UserProvider({ children }) {
 
   const fetchLoanData = async () => {
     try {
-      console.log("userData.....", userData.id);
       const response = await loadLoanData(userData.id);
       if (response.success) {
         setLoanData(response.loans);
@@ -79,10 +76,8 @@ export function UserProvider({ children }) {
         method: "POST",
         credentials: "include",
       });
-      console.log("response-----", response);
       if (response.ok) {
         setUserData(initialData);
-        console.log("User logged out successfully");
 
         router.push("/login");
       }
