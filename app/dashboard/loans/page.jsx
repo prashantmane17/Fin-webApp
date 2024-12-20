@@ -31,7 +31,6 @@ import { AddLoanModal } from "@/components/model/loan_model";
 import { useUser } from "@/context/UserContext";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-// Sample data
 
 export default function App() {
   const { loanisLoading, loanData, userData } = useUser();
@@ -72,7 +71,6 @@ export default function App() {
         className="max-w-[1400px] mx-auto flex-grow flex flex-col"
         style={{ maxHeight: "calc(100vh - 48px)" }}
       >
-        {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-2">
             <div className="bg-blue-600 text-white p-2 rounded">
@@ -108,7 +106,6 @@ export default function App() {
           />
         </div>
 
-        {/* Filters */}
         <div className="bg-white rounded-lg shadow mb-3">
           <div className="p-4 flex justify-between items-center">
             <div className="flex items-center gap-4">

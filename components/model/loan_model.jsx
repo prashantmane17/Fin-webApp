@@ -86,13 +86,76 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
     };
   };
 
+  const generateEmiHistory = (
+    startDate,
+    repaymentMethod,
+    totalInstallments,
+    advancePayment
+  ) => {
+    const emiHistory = [];
+    const installmentAmount = parseFloat(formData.installmentAmount) || 0;
+
+    // Add the advance payment as the first EMI entry
+    if (advancePayment > 0) {
+      emiHistory.push({
+        date: new Date(startDate).toISOString().split("T")[0], // Use the repayment start date for advance payment
+        amount: advancePayment.toFixed(2),
+        transactionId: "TXN00000", // Indicate advance payment with a unique ID
+      });
+    }
+
+    let currentDate = new Date(startDate);
+
+    // Start EMI schedule from the next date based on repayment frequency
+    for (let i = 1; i <= totalInstallments; i++) {
+      switch (repaymentMethod) {
+        case "daily":
+          currentDate.setDate(currentDate.getDate() + 1);
+          break;
+        case "weekly":
+          currentDate.setDate(currentDate.getDate() + 7);
+          break;
+        case "monthly":
+          currentDate.setMonth(currentDate.getMonth() + 1);
+          break;
+      }
+      console.log(
+        installmentAmount.toFixed(2),
+        "amaoiut----------",
+        installmentAmount
+      );
+      emiHistory.push({
+        date: currentDate.toISOString().split("T")[0],
+        amount: installmentAmount.toFixed(2),
+        transactionId: `TXN${i.toString().padStart(5, "0")}`,
+      });
+    }
+
+    return emiHistory;
+  };
+
   const handleInputChange = (field, value) => {
     setFormData((prev) => {
       const newData = { ...prev, [field]: value };
+
       const { installmentAmount } = calculateInstallmentAmount();
+
+      const emiHistory =
+        newData.repaymentStartDate &&
+        newData.repaymentMethod &&
+        newData.totalInstallment
+          ? generateEmiHistory(
+              new Date(newData.repaymentStartDate),
+              newData.repaymentMethod,
+              parseInt(newData.totalInstallment),
+              parseFloat(newData.advancePayment) || 0
+            )
+          : [];
+
       return {
         ...newData,
         installmentAmount,
+        emiHistory,
       };
     });
   };
@@ -105,6 +168,7 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
       owner: ownerid,
     }));
     try {
+      console.log("foreach-------------", formData);
       const response = await addLoanDetails(formData);
 
       if (response.success) {

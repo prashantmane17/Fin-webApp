@@ -16,6 +16,7 @@ import Link from "next/link";
 const sidebarNavItems = [
   { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { title: "Loans", icon: Dock, href: "/dashboard/loans" },
+  { title: "Investment", icon: IndianRupee, href: "/dashboard/investment" },
   { title: "withdrawn", icon: CircleDollarSign, href: "/dashboard/withdrawn" },
   { title: "Payments", icon: IndianRupee, href: "/dashboard/payments" },
   { title: "Members", icon: Users, href: "/dashboard/members" },

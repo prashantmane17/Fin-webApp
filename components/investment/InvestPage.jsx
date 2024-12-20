@@ -79,7 +79,7 @@ const sampleLoans = [
   },
 ];
 
-export default function App() {
+export default function Invest() {
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("25");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -136,14 +136,14 @@ export default function App() {
                 />
               </svg>
             </div>
-            <h1 className="text-2xl font-semibold">Withdrawn</h1>
+            <h1 className="text-2xl font-semibold">Investment</h1>
           </div>
           <Button
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-600 hover:bg-blue-700"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Withdraw
+            Investment
           </Button>
           <AddLoanModal
             open={isModalOpen}

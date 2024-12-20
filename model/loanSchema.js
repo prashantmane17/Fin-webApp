@@ -1,5 +1,35 @@
 import mongoose from "mongoose";
 
+const emiHistorySchema = new mongoose.Schema({
+  date: {
+    type: Date,
+  },
+  amount: {
+    type: String,
+  },
+  transactionId: {
+    type: String,
+  },
+  paidDate: {
+    type: Date,
+  },
+});
+
+const penaltyHistorySchema = new mongoose.Schema({
+  date: {
+    type: Date,
+  },
+  amount: {
+    type: String,
+  },
+  transactionId: {
+    type: String,
+  },
+  paidDate: {
+    type: Date,
+  },
+});
+
 const userLoanSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -28,7 +58,7 @@ const userLoanSchema = new mongoose.Schema({
   },
   processingFee: {
     type: String,
-    required: true, // Changed from 'processFee' to match the initial data field
+    required: true,
   },
   interest: {
     type: String,
@@ -36,7 +66,7 @@ const userLoanSchema = new mongoose.Schema({
   },
   totalInstallment: {
     type: String,
-    required: true, // Added to match 'totalInstallment' in the data
+    required: true,
   },
   installmentAmount: {
     type: String,
@@ -48,11 +78,11 @@ const userLoanSchema = new mongoose.Schema({
   },
   approvalDate: {
     type: Date,
-    required: true, // Changed from 'loanApprovalDate' to 'approvalDate'
+    required: true,
   },
   repaymentStartDate: {
     type: Date,
-    required: true, // Changed from 'repaymentDate' to 'repaymentStartDate'
+    required: true,
   },
   paymentMethod: {
     type: String,
@@ -62,13 +92,14 @@ const userLoanSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  emiHistory: [emiHistorySchema],
+  penaltyHistory: [penaltyHistorySchema],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Owner",
   },
 });
 
-// Check if the model is already registered
 const UserLoanData =
   mongoose.models.UserLoan || mongoose.model("UserLoan", userLoanSchema);
 

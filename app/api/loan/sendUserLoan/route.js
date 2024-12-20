@@ -13,16 +13,17 @@ export async function POST(request) {
       phone,
       email,
       loanAmount,
-      processingFee, // updated field name
+      processingFee, 
       interest,
       repaymentMethod,
-      totalInstallment, // updated field name
+      totalInstallment, 
       advancePayment,
       installmentAmount,
-      approvalDate, // updated field name
-      repaymentStartDate, // updated field name
+      approvalDate, 
+      repaymentStartDate, 
       paymentMethod,
       owner,
+      emiHistory,
     } = await request.json();
 
     console.log();
@@ -43,6 +44,7 @@ export async function POST(request) {
       repaymentStartDate, // updated field name
       paymentMethod,
       owner,
+      emiHistory,
     });
 
     const savedLoan = await newLoan.save();
