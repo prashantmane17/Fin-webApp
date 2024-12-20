@@ -4,13 +4,11 @@ import jwt from "jsonwebtoken";
 import db_Connect from "@/helper/dbConnect";
 import Owner from "@/model/userSchema";
 
-// export const dynamic = "force-dynamic"; // Ensures the route is treated as dynamic
-
 export async function POST(request) {
   await db_Connect();
   const { name, email, phone, companyName, password } = await request.json();
   try {
-    const userExits = await Owner.findOne({ email }); // Fix findOne query syntax
+    const userExits = await Owner.findOne({ email });
     if (userExits) {
       return NextResponse.json(
         { message: "User already exists" },
@@ -35,11 +33,10 @@ export async function POST(request) {
         name: newUser.name,
         comapanyName: newUser.comapanyName,
       },
-      process.env.JWT_SECRET, // Ensure JWT_SECRET is defined in your .env
-      { expiresIn: "1w" } // Token expiration (1 week)
+      process.env.JWT_SECRET,
+      { expiresIn: "1w" }
     );
 
-    // Set the token in a cookie
     const response = NextResponse.json(
       {
         success: true,
@@ -52,8 +49,8 @@ export async function POST(request) {
 
     response.cookies.set("authToken", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set to true for production
-      maxAge: 7 * 24 * 60 * 60, // 1 week in seconds
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60,
       path: "/",
     });
 

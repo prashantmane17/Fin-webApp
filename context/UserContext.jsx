@@ -12,6 +12,7 @@ export function UserProvider({ children }) {
     name: null,
     companyName: null,
   };
+  const router = useRouter();
   const [userData, setUserData] = useState(initialData);
   const [isLoading, setIsLoading] = useState(true);
   const [loanisLoading, setLoanIsLoading] = useState(true);
@@ -37,7 +38,6 @@ export function UserProvider({ children }) {
           name: data.user.name || null,
           companyName: data.user.companyName || null,
         });
-        // console.log("User data fetched:", data.user);
       } else {
         console.warn("No valid user data received:", data);
         setUserData(initialData);
@@ -73,22 +73,23 @@ export function UserProvider({ children }) {
     }
   }, [userData]);
 
-  //   const logoutUser = async () => {
-  //     try {
-  //       await fetch("/api/logout", {
-  //         method: "POST",
-  //         credentials: "include",
-  //       });
+  const logoutUser = async () => {
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      console.log("response-----", response);
+      if (response.ok) {
+        setUserData(initialData);
+        console.log("User logged out successfully");
 
-  //       setUserData(initialData);
-  //       console.log("User logged out successfully");
-
-  //       const router = useRouter();
-  //       router.push("/");
-  //     } catch (error) {
-  //       console.error("Error during logout:", error);
-  //     }
-  //   };
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
 
   return (
     <UserContext.Provider
@@ -98,6 +99,7 @@ export function UserProvider({ children }) {
         userData,
         loanisLoading,
         isLoading,
+        logoutUser,
         fetchUserData,
         fetchLoanData,
       }}

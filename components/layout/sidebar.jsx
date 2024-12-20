@@ -1,5 +1,6 @@
 "use client";
 
+import { useUser } from "@/context/UserContext";
 import { cn } from "@/lib/utils";
 import {
   IndianRupee,
@@ -23,6 +24,7 @@ const sidebarNavItems = [
 ];
 
 export function Sidebar({ className }) {
+  const { logoutUser } = useUser();
   return (
     <div className={cn("pb-12 min-h-screen", className)}>
       <div className="space-y-4 py-4">
@@ -54,13 +56,15 @@ export function Sidebar({ className }) {
               Profile
             </Link>
 
-            <Link
-              href="/login"
-              className="flex items-center w-full py-2 px-4 text-sm font-medium rounded-md text-red-500 hover:bg-red-100 hover:text-red-600"
+            <div
+              onClick={() => {
+                logoutUser();
+              }}
+              className="flex items-center w-full py-2 px-4 text-sm font-medium rounded-md text-red-500 cursor-pointer hover:bg-red-100 hover:text-red-600"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
-            </Link>
+            </div>
           </div>
         </div>
       </div>

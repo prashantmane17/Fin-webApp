@@ -1,6 +1,28 @@
 import mongoose from "mongoose";
-
-// Define the Owner Schema
+const investMentSchema = new mongoose.Schema({
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  amount: {
+    type: String,
+  },
+  remark: {
+    type: String,
+  },
+});
+const withdrawnSchema = new mongoose.Schema({
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  amount: {
+    type: String,
+  },
+  remark: {
+    type: String,
+  },
+});
 const OwnerSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -9,7 +31,7 @@ const OwnerSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // Ensures email is unique
+    unique: true,
   },
   phone: {
     type: String,
@@ -20,12 +42,14 @@ const OwnerSchema = new mongoose.Schema({
     required: true,
   },
   photo: {
-    type: String, 
+    type: String,
   },
   companyName: {
     type: String,
     required: true,
   },
+  investAmount: [investMentSchema],
+  withdrawnAmount: [withdrawnSchema],
 });
 
 const Owner = mongoose.models.Owner || mongoose.model("Owner", OwnerSchema);

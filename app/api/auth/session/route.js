@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import db_Connect from "@/helper/dbConnect";
+import { decode } from "punycode";
 
 export async function GET(request) {
   await db_Connect();
@@ -13,6 +14,7 @@ export async function GET(request) {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("decodeed----", decoded);
     return NextResponse.json({
       success: true,
       message: "Authenticated",
