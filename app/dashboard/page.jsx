@@ -7,6 +7,9 @@ import {
   Percent,
   DollarSign,
   AlertCircle,
+  IndianRupee,
+  Receipt,
+  HandCoins,
 } from "lucide-react";
 import {
   Select,
@@ -19,9 +22,7 @@ import {
   monthlyData,
   distributionData,
   timeFilterOptions,
-  typeTimeFilter,
 } from "@/lib/constants/dashboard-data";
-import { StatCard } from "@/components/dashboard/stats-card";
 import { LineChartCard } from "@/components/dashboard/analytics/line-chart";
 import { PieChartCard } from "@/components/dashboard/analytics/pie-chart";
 import { useInvestment } from "@/context/InvestmentContext";
@@ -46,78 +47,141 @@ export default function Dashboard() {
   );
   return (
     <main className="min-h-screen bg-background p-8">
-      <div className="max-w-[1400px] mx-auto space-y-8">
+      <div className=" mx-auto space-y-8">
         {/* Header */}
-        <div className="flex justify-between items-center">
+        <div className="lg:flex justify-between items-center">
           <h1 className="text-3xl font-bold">Dashboard</h1>
-          <Select
-            value={timeFilter}
-            onValueChange={(value) => setTimeFilter(value)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select time period" />
-            </SelectTrigger>
-            <SelectContent>
-              {timeFilterOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className=" flex flex-wrap sm:flex-nowrap  items-center gap-2">
+            <Select
+              value={timeFilter}
+              onValueChange={(value) => setTimeFilter(value)}
+            >
+              <SelectTrigger className="sm:w-[15em]">
+                <SelectValue placeholder="Select time period" />
+              </SelectTrigger>
+              <SelectContent>
+                {timeFilterOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <div class="rounded-lg w-full sm:w-[15em] border bg-card text-card-foreground shadow-sm p-1 px-2  flex items-center">
+              <div class="flex items-center gap-2">
+                <div class="p-2 bg-blue-100 rounded-lg">
+                  <Wallet className="h-4 w-4 text-blue-600" />
+                </div>
+                <div className="flex items-center  ">
+                  <p class="text-sm w-full text-muted-foreground mr-2">
+                    Total Capital:
+                  </p>
+                  <div class="flex items-center">
+                    <IndianRupee className="h-4 w-3" />
+                    <p class="text-lg font-bold">{totalInvestment}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full sm:w-[15em] p-1 px-2 flex items-center">
+              <div class="flex items-center gap-2">
+                <div class="p-2 bg-green-100 rounded-lg">
+                  <PiggyBank className="h-4 w-4 text-green-600" />
+                </div>
+                <div className="flex items-center ">
+                  <p class="text-sm text-muted-foreground mr-2">
+                    Available Credit:
+                  </p>
+                  <div class="flex items-center">
+                    <IndianRupee className="h-4 w-3" />
+                    <p class="text-lg font-bold">
+                      {totalInvestment - totalWithdraws}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Top Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <StatCard
-            title="Total Capital"
-            value={totalInvestment}
-            icon={Wallet}
-            iconBgColor="bg-blue-100"
-            iconColor="text-blue-600"
-          />
-          <StatCard
-            title="Available Credit"
-            value={totalInvestment-totalWithdraws}
-            icon={PiggyBank}
-            iconBgColor="bg-green-100"
-            iconColor="text-green-600"
-          />
-          <StatCard
-            title="Interest Earnings"
-            value="75,000.00"
-            icon={Percent}
-            iconBgColor="bg-purple-100"
-            iconColor="text-purple-600"
-          />
+        <div class="grid grid-col-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-6">
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-orange-100 rounded-lg">
+                <AlertCircle className="h-6 w-6 text-orange-600" />
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground">
+                  Total Outstanding Loan
+                </p>
+                <div class="flex items-center gap-2">
+                  <IndianRupee className="h-4 w-4" />
+                  <p class="text-2xl font-bold">180,000.0</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-pink-100 rounded-lg">
+                <HandCoins className="h-6 w-6 text-pink-600" />
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground">Principal Payment</p>
+                <div class="flex items-center gap-2">
+                  <IndianRupee className="h-4 w-4" />
+                  <p class="text-2xl font-bold">120,000.0</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-yellow-100 rounded-lg">
+                <Receipt className="h-6 w-6 text-yellow-600" />
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground">
+                  Total Processing Fee
+                </p>
+                <div class="flex items-center gap-2">
+                  <IndianRupee className="h-4 w-4" />
+                  <p class="text-2xl font-bold">20,000.0</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-purple-100 rounded-lg">
+                <Percent className="h-6 w-6 text-purple-600" />
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground">Interest Earnings</p>
+                <div class="flex items-center gap-2">
+                  <IndianRupee className="h-4 w-4" />
+                  <p class="text-2xl font-bold">20,000.0</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-blue-100 rounded-lg">
+                <DollarSign className="h-6 w-6 text-blue-600" />
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground">Penalty Earnings</p>
+                <div class="flex items-center gap-2">
+                  <IndianRupee className="h-4 w-4" />
+                  <p class="text-2xl font-bold">20,000.0</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Middle Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <StatCard
-            title="Total Outstanding Loan"
-            value="180,000.00"
-            icon={AlertCircle}
-            iconBgColor="bg-orange-100"
-            iconColor="text-orange-600"
-          />
-          <StatCard
-            title="Principal Payment"
-            value="120,000.00"
-            icon={DollarSign}
-            iconBgColor="bg-pink-100"
-            iconColor="text-pink-600"
-          />
-          <StatCard
-            title="Expected Interest"
-            value="25,000.00"
-            icon={Percent}
-            iconBgColor="bg-yellow-100"
-            iconColor="text-yellow-600"
-          />
-        </div>
-
-        {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <LineChartCard title="Received Amount" data={monthlyData} />
           <PieChartCard title="Distribution" data={distributionData} />

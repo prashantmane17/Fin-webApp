@@ -151,7 +151,7 @@ export default function App() {
           </Button>
           {isModalOpen && (
             <div className="modal fixed top-0 z-50 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center">
-              <div className="bg-white rounded-lg shadow-lg w-1/2 p-6">
+              <div className="bg-white rounded-lg shadow-lg w-11/12 md:w-1/2 p-6">
                 <div className="flex justify-between items-center mb-4 border-b pb-2">
                   <h2 className="text-xl flex items-center gap-3 font-semibold text-gray-800">
                     <svg
@@ -250,8 +250,8 @@ export default function App() {
 
         {/* Filters */}
         <div className="bg-white rounded-lg shadow mb-3">
-          <div className="p-4 flex justify-between items-center">
-            <div className="flex items-center gap-4">
+          <div className="p-4 flex justify-between flex-col md:flex-row gap-2 items-center">
+            <div className="flex  items-center gap-4">
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-gray-500" />
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -269,7 +269,7 @@ export default function App() {
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                 <Input
                   placeholder="Search..."
-                  className="pl-9 w-[300px]"
+                  className="pl-9 md:w-[300px]"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -302,9 +302,9 @@ export default function App() {
           <Table className="relative">
             <TableHeader className="sticky top-0 z-10">
               <TableRow>
-                <TableHead className="w-[30px]">
+                {/* <TableHead className="w-[30px]">
                   <input type="checkbox" className="rounded" />
-                </TableHead>
+                </TableHead> */}
                 <TableHead>DATE</TableHead>
                 <TableHead>AMOUNT</TableHead>
                 <TableHead>REMARKS</TableHead>
@@ -314,9 +314,9 @@ export default function App() {
               {loading &&
                 [...Array(2)].map((_, index) => (
                   <TableRow key={index}>
-                    <TableCell>
+                    {/* <TableCell>
                       <Input type="checkbox" />
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell>
                       <Skeleton width={136} />
                     </TableCell>
@@ -330,12 +330,12 @@ export default function App() {
                 ))}
               {getCurrentPageItems().map((loan, index) => (
                 <TableRow key={index}>
-                  <TableCell>
+                  {/* <TableCell>
                     <input type="checkbox" className="rounded" />
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>
                     <div className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+                      <Calendar className="w-4 h-4 mr-2 hidden md:block text-gray-500" />
                       {formatDate(loan.date)}
                     </div>
                   </TableCell>
