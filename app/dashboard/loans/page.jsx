@@ -26,11 +26,14 @@ import {
   ChevronLeft,
   ChevronRight,
   PhoneCall,
+  Wallet,
 } from "lucide-react";
 import { AddLoanModal } from "@/components/model/loan_model";
 import { useUser } from "@/context/UserContext";
+import CardView from "@/components/loan/main/CardView";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Link from "next/link";
 
 export default function App() {
   const { loanisLoading, loanData, userData } = useUser();
@@ -66,12 +69,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 flex flex-col">
       <div
-        className="max-w-[1400px] mx-auto flex-grow flex flex-col"
+        className="w-100% mx-auto flex-grow flex flex-col"
         style={{ maxHeight: "calc(100vh - 48px)" }}
       >
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex p-6 flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div className="flex items-center gap-2">
             <div className="bg-blue-600 text-white p-2 rounded">
               <svg
@@ -92,12 +95,11 @@ export default function App() {
           </div>
           <Button
             onClick={() => setIsModalOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-blue-600 hover:bg-blue-700 sm:w-auto"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Loan
           </Button>
-          {}
           <AddLoanModal
             open={isModalOpen}
             onClose={() => setIsModalOpen(false)}
@@ -106,10 +108,13 @@ export default function App() {
           />
         </div>
 
-        <div className="bg-white rounded-lg shadow mb-3">
-          <div className="p-4 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
+        <div className=" lg:hidden">
+          <CardView loans={loanData} isLoading={loanisLoading} />
+        </div>
+        <div className="hidden lg:block bg-white rounded-lg shadow mb-3">
+          <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
                 <Filter className="w-4 h-4 text-gray-500" />
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
                   <SelectTrigger className="w-[120px]">
@@ -122,18 +127,18 @@ export default function App() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="relative">
+              <div className="relative w-full sm:w-auto">
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                 <Input
                   placeholder="Search..."
-                  className="pl-9 w-[300px]"
+                  className="pl-9 w-full sm:w-[300px]"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   ownerid={userData.id}
                 />
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-start">
               <Select value={entriesPerPage} onValueChange={setEntriesPerPage}>
                 <SelectTrigger className="w-[80px]">
                   <SelectValue placeholder="25" />
@@ -156,7 +161,7 @@ export default function App() {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-lg shadow flex-grow overflow-auto">
+        <div className="hidden lg:block bg-white rounded-lg shadow flex-grow overflow-auto">
           <Table className="relative">
             <TableHeader className="sticky top-0 z-10">
               <TableRow>
@@ -239,9 +244,9 @@ export default function App() {
                   </TableCell>
                   <TableCell>
                     <div>
-                      <div className="font-medium text-blue-600">
+                      <Link href={`/dashboard/loans/${loan.customerId}`} className="font-medium text-blue-600">
                         {loan.name}
-                      </div>
+                      </Link>
                       <div className="text-sm text-gray-500 flex items-center">
                         <PhoneCall className="w-4 h-4 text-green-600 mr-1" />
                         {loan.phone}
@@ -301,9 +306,10 @@ export default function App() {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm">
-                        View
+                    <div className="flex items-center gap-2 ">
+                      <Button variant="outline" size="sm" className="text-blue-600 border-blue-600 hover:bg-blue-200 hover:text-blue-700 hover:scale-105 transition-all">
+                        <Wallet className="w-4 h-4 " />
+                        Pay
                       </Button>
                     </div>
                   </TableCell>
@@ -314,7 +320,7 @@ export default function App() {
         </div>
 
         {/* Pagination */}
-        <div className="mt-2 flex justify-between items-center">
+        <div className="hidden mt-2 lg:flex justify-between items-center">
           <div>
             Showing {(currentPage - 1) * parseInt(entriesPerPage) + 1} to{" "}
             {Math.min(

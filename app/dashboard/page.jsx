@@ -67,34 +67,34 @@ export default function Dashboard() {
                 ))}
               </SelectContent>
             </Select>
-            <div class="rounded-lg w-full sm:w-[15em] border bg-card text-card-foreground shadow-sm p-1 px-2  flex items-center">
-              <div class="flex items-center gap-2">
-                <div class="p-2 bg-blue-100 rounded-lg">
+            <div className="rounded-lg w-full sm:w-[15em] border bg-card text-card-foreground shadow-sm p-1 px-2  flex items-center">
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-blue-100 rounded-lg">
                   <Wallet className="h-4 w-4 text-blue-600" />
                 </div>
                 <div className="flex items-center  ">
-                  <p class="text-sm w-full text-muted-foreground mr-2">
+                  <p className="text-sm w-full text-muted-foreground mr-2">
                     Total Capital:
                   </p>
-                  <div class="flex items-center">
+                  <div className="flex items-center">
                     <IndianRupee className="h-4 w-3" />
-                    <p class="text-lg font-bold">{totalInvestment}</p>
+                    <p className="text-lg font-bold">{totalInvestment}</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full sm:w-[15em] p-1 px-2 flex items-center">
-              <div class="flex items-center gap-2">
-                <div class="p-2 bg-green-100 rounded-lg">
+            <div className="rounded-lg border bg-card text-card-foreground shadow-sm w-full sm:w-[15em] p-1 px-2 flex items-center">
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-green-100 rounded-lg">
                   <PiggyBank className="h-4 w-4 text-green-600" />
                 </div>
                 <div className="flex items-center ">
-                  <p class="text-sm text-muted-foreground mr-2">
+                  <p className="text-sm text-muted-foreground mr-2">
                     Available Credit:
                   </p>
-                  <div class="flex items-center">
+                  <div className="flex items-center">
                     <IndianRupee className="h-4 w-3" />
-                    <p class="text-lg font-bold">
+                    <p className="text-lg font-bold">
                       {totalInvestment - totalWithdraws}
                     </p>
                   </div>
@@ -104,78 +104,84 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div class="grid grid-col-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-6">
-          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
-            <div class="flex items-center gap-4">
-              <div class="p-3 bg-orange-100 rounded-lg">
+        <div className="grid grid-col-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-6">
+          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-orange-100 rounded-lg">
                 <AlertCircle className="h-6 w-6 text-orange-600" />
               </div>
               <div>
-                <p class="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   Total Outstanding Loan
                 </p>
-                <div class="flex items-center gap-2">
+                <div className="flex items-center gap-2">
                   <IndianRupee className="h-4 w-4" />
-                  <p class="text-2xl font-bold">180,000.0</p>
+                  <p className="text-2xl font-bold">180,000.0</p>
                 </div>
               </div>
             </div>
           </div>
-          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
-            <div class="flex items-center gap-4">
-              <div class="p-3 bg-pink-100 rounded-lg">
+          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-pink-100 rounded-lg">
                 <HandCoins className="h-6 w-6 text-pink-600" />
               </div>
               <div>
-                <p class="text-sm text-muted-foreground">Principal Payment</p>
-                <div class="flex items-center gap-2">
+                <p className="text-sm text-muted-foreground">
+                  Principal Payment
+                </p>
+                <div className="flex items-center gap-2">
                   <IndianRupee className="h-4 w-4" />
-                  <p class="text-2xl font-bold">120,000.0</p>
+                  <p className="text-2xl font-bold">120,000.0</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
-            <div class="flex items-center gap-4">
-              <div class="p-3 bg-yellow-100 rounded-lg">
+          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-yellow-100 rounded-lg">
                 <Receipt className="h-6 w-6 text-yellow-600" />
               </div>
               <div>
-                <p class="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   Total Processing Fee
                 </p>
-                <div class="flex items-center gap-2">
+                <div className="flex items-center gap-2">
                   <IndianRupee className="h-4 w-4" />
-                  <p class="text-2xl font-bold">20,000.0</p>
+                  <p className="text-2xl font-bold">20,000.0</p>
                 </div>
               </div>
             </div>
           </div>
-          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
-            <div class="flex items-center gap-4">
-              <div class="p-3 bg-purple-100 rounded-lg">
+          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-purple-100 rounded-lg">
                 <Percent className="h-6 w-6 text-purple-600" />
               </div>
               <div>
-                <p class="text-sm text-muted-foreground">Interest Earnings</p>
-                <div class="flex items-center gap-2">
+                <p className="text-sm text-muted-foreground">
+                  Interest Earnings
+                </p>
+                <div className="flex items-center gap-2">
                   <IndianRupee className="h-4 w-4" />
-                  <p class="text-2xl font-bold">20,000.0</p>
+                  <p className="text-2xl font-bold">20,000.0</p>
                 </div>
               </div>
             </div>
           </div>
-          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
-            <div class="flex items-center gap-4">
-              <div class="p-3 bg-blue-100 rounded-lg">
+          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-blue-100 rounded-lg">
                 <DollarSign className="h-6 w-6 text-blue-600" />
               </div>
               <div>
-                <p class="text-sm text-muted-foreground">Penalty Earnings</p>
-                <div class="flex items-center gap-2">
+                <p className="text-sm text-muted-foreground">
+                  Penalty Earnings
+                </p>
+                <div className="flex items-center gap-2">
                   <IndianRupee className="h-4 w-4" />
-                  <p class="text-2xl font-bold">20,000.0</p>
+                  <p className="text-2xl font-bold">20,000.0</p>
                 </div>
               </div>
             </div>
