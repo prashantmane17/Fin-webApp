@@ -168,7 +168,6 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
       owner: ownerid,
     }));
     try {
-      console.log("foreach-------------", formData);
       const response = await addLoanDetails(formData);
 
       if (response.success) {
@@ -177,7 +176,6 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
             ? [...prevLoans, response.data]
             : [response.data]
         );
-        // console.log(response.data);
         setFormData(intialData);
         toast.success("loan added SuccessFully!!..", {
           position: "top-center",

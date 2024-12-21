@@ -35,7 +35,6 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(loginData);
       setIsLoading(true);
       const response = await verifyOwner(loginData);
 

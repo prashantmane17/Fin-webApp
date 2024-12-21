@@ -112,7 +112,7 @@ export default function Invest() {
           };
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   };
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
@@ -250,19 +250,7 @@ export default function Invest() {
         <div className="bg-white rounded-lg shadow mb-3">
           <div className="p-4 flex flex-col md:flex-row  gap-2 justify-between items-center">
             <div className="flex  items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 text-gray-500" />
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-[120px]">
-                    <SelectValue placeholder="Filter" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+
               <div className="relative">
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                 <Input

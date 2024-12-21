@@ -67,7 +67,14 @@ export default function App() {
     const endIndex = startIndex + parseInt(entriesPerPage);
     return filteredLoans.slice(startIndex, endIndex);
   };
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6 flex flex-col">
       <div
@@ -256,10 +263,10 @@ export default function App() {
                   <TableCell>
                     {/* <div className="flex items-center">
                     <User className="text-blue-400 w-4 h-4 "/> */}
-                    {loan.customerId}
+                    {loan?.customerId}
                     {/* </div> */}
                   </TableCell>
-                  <TableCell>{loan.loanId}</TableCell>
+                  <TableCell>{loan?.loanId}</TableCell>
                   <TableCell>₹ {loan.loanAmount.toLocaleString()}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
@@ -279,7 +286,7 @@ export default function App() {
                         ₹ {loan.installmentAmount}
                       </div>
                       <div className="text-sm text-gray-500">
-                        {loan.repaymentStartDate}
+                        {formatDate(loan.repaymentStartDate)}
                       </div>
                       <div
                         className={cn(

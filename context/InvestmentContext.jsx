@@ -17,7 +17,6 @@ export const InvestmentProvider = ({ children }) => {
       setError(null);
 
       try {
-        console.log("dtatat-----", userData.id);
         const response = await fetch(`/api/userControll/${userData.id}`, {
           method: "GET",
         });
@@ -30,7 +29,6 @@ export const InvestmentProvider = ({ children }) => {
         }
 
         const data = await response.json();
-        console.log(data);
         setInvestmentData(data);
       } catch (err) {
         setError(err.message);

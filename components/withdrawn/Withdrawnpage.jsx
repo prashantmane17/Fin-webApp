@@ -100,7 +100,6 @@ export default function App() {
         ...formData, // Spread form data into the investment object
       },
     };
-    console.log("requestData-----", requestData);
     try {
       const response = await invest_Withdraw(requestData);
       if (response.success) {
@@ -114,7 +113,7 @@ export default function App() {
           };
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   };
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
@@ -252,19 +251,7 @@ export default function App() {
         <div className="bg-white rounded-lg shadow mb-3">
           <div className="p-4 flex justify-between flex-col md:flex-row gap-2 items-center">
             <div className="flex  items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 text-gray-500" />
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-[120px]">
-                    <SelectValue placeholder="Filter" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+
               <div className="relative">
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                 <Input

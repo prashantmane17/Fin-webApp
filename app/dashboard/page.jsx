@@ -33,7 +33,6 @@ export default function Dashboard() {
   let investment = [];
   let withdraws = [];
   if (!loading) {
-    console.log("inves----", investmentData);
     investment = investmentData.investments;
     withdraws = investmentData.withdrawals;
   }

@@ -46,7 +46,6 @@ export default function SignUpPage() {
     }
     try {
       setIsLoading(true);
-      console.log(userData);
       const response = await addOwners(userData);
       if (response.success) {
         router.push("/dashboard");
