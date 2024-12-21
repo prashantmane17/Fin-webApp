@@ -15,7 +15,8 @@ export async function POST(request) {
         { status: 404 }
       );
     }
-    const checkPassword = bcrypt.compare(password, userExits.password);
+    const checkPassword = await bcrypt.compare(password, userExits.password);
+    // console.log(password,)
     if (!checkPassword) {
       return NextResponse.json(
         { message: "Incorrect Password!!" },

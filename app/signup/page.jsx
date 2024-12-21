@@ -16,6 +16,9 @@ import { addOwners } from "@/axios/auth";
 import { useState } from "react";
 import { useUser } from "../../context/UserContext";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Bounce } from "react-toastify";
 
 export default function SignUpPage() {
   const intialData = {
@@ -41,6 +44,17 @@ export default function SignUpPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (userData.password !== confirmPassword) {
+      toast.error("The passwords entered do not match!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       alert("Passwords do not match!");
       return;
     }
@@ -48,11 +62,45 @@ export default function SignUpPage() {
       setIsLoading(true);
       const response = await addOwners(userData);
       if (response.success) {
+        toast.success("Logged in successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
         router.push("/dashboard");
         fetchUserData();
       }
-      fetchUserData();
+      else {
+        toast.error(response?.message || "Invalid login credentials!", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
     } catch (error) {
+      toast.error(error?.response?.data?.message || "Something went wrong!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       console.log("error----", error);
     } finally {
       setIsLoading(false);

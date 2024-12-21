@@ -16,6 +16,9 @@ import { useState } from "react";
 import { verifyOwner } from "@/axios/auth";
 import { useRouter } from "next/navigation";
 import { useUser } from "../../context/UserContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Bounce } from "react-toastify";
 
 export default function LoginPage() {
   const intialData = {
@@ -38,19 +41,55 @@ export default function LoginPage() {
       setIsLoading(true);
       const response = await verifyOwner(loginData);
 
-      if (response.success) {
+      if (response?.success) {
+        // Success Toast
+        toast.success("Logged in successfully!", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
         router.push("/dashboard");
         fetchUserData();
       } else {
-        console.error("Login failed:", response.message || "Unknown error");
-        alert(response.message || "Invalid login credentials!");
+        toast.error(response?.message || "Invalid login credentials!", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+
+        console.error("Login failed:", response?.message || "Unknown error");
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error?.response?.data?.message || "Something went wrong!", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
+      console.error("Error during login:", error);
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/50 to-background p-4">
       <Card className="w-full max-w-md">

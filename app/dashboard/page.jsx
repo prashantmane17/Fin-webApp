@@ -10,6 +10,7 @@ import {
   IndianRupee,
   Receipt,
   HandCoins,
+  BadgeIndianRupee,
 } from "lucide-react";
 import {
   Select,
@@ -26,16 +27,45 @@ import {
 import { LineChartCard } from "@/components/dashboard/analytics/line-chart";
 import { PieChartCard } from "@/components/dashboard/analytics/pie-chart";
 import { useInvestment } from "@/context/InvestmentContext";
+import { useUser } from "@/context/UserContext";
 
 export default function Dashboard() {
   const [timeFilter, setTimeFilter] = useState("this_year");
   const { investmentData, loading } = useInvestment();
+  const { isLoading, loanData } = useUser();
+
   let investment = [];
   let withdraws = [];
   if (!loading) {
     investment = investmentData.investments;
     withdraws = investmentData.withdrawals;
   }
+  const totalUserLoan = loanData?.reduce((total, item) => total + parseInt(item.loanAmount, 10), 0)
+  const totalProcessingFee = loanData?.reduce((total, item) => total + parseInt(item.processingFee, 10), 0)
+  const totalInterest = loanData?.reduce((total, item) => {
+    const loanAmount = parseInt(item.loanAmount, 10);
+    const totalInstallment = parseInt(item.totalInstallment, 10);
+    const repaymentMethod = item.repaymentMethod;
+    const loanInterest = parseInt(item.interest, 10);
+    let timeInYears;
+
+    if (repaymentMethod === "daily") {
+      timeInYears = totalInstallment / 365;
+    } else if (repaymentMethod === "weekly") {
+      timeInYears = totalInstallment / 52;
+    } else if (repaymentMethod === "monthly") {
+      timeInYears = totalInstallment / 12;
+    } else {
+      throw new Error("Invalid repayment method");
+    }
+
+    const interest = (loanAmount * timeInYears * loanInterest) / 100;
+    const totalAmount = Number(total) + Number(interest);
+    return totalAmount.toFixed(2);
+  }, 0);
+
+
+
   const totalInvestment = investment.reduce(
     (total, item) => total + parseInt(item.amount, 10),
     0
@@ -107,7 +137,7 @@ export default function Dashboard() {
           <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex items-center">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-orange-100 rounded-lg">
-                <AlertCircle className="h-6 w-6 text-orange-600" />
+                <BadgeIndianRupee className="h-6 w-6 text-orange-600" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">
@@ -115,7 +145,7 @@ export default function Dashboard() {
                 </p>
                 <div className="flex items-center gap-2">
                   <IndianRupee className="h-4 w-4" />
-                  <p className="text-2xl font-bold">180,000.0</p>
+                  <p className="text-2xl font-bold">{totalUserLoan}</p>
                 </div>
               </div>
             </div>
@@ -148,7 +178,7 @@ export default function Dashboard() {
                 </p>
                 <div className="flex items-center gap-2">
                   <IndianRupee className="h-4 w-4" />
-                  <p className="text-2xl font-bold">20,000.0</p>
+                  <p className="text-2xl font-bold">{totalProcessingFee}</p>
                 </div>
               </div>
             </div>
@@ -164,7 +194,7 @@ export default function Dashboard() {
                 </p>
                 <div className="flex items-center gap-2">
                   <IndianRupee className="h-4 w-4" />
-                  <p className="text-2xl font-bold">20,000.0</p>
+                  <p className="text-2xl font-bold">{totalInterest}</p>
                 </div>
               </div>
             </div>
