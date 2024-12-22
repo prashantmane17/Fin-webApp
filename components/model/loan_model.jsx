@@ -2,22 +2,11 @@
 
 import { useState } from "react";
 import { format } from "date-fns";
-import { Calendar } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Calendar, X } from "lucide-react";
+// import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import {
@@ -36,49 +25,23 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
   const { setLoanData, userData } = useUser();
   const userIdString = String(userData.id);
   let intialData = {
-    name: "",
-    customerId: "",
-    loanId: "",
-    email: "",
-    phone: "",
-    loanAmount: "",
-    processingFee: "",
-    interest: "",
-    totalInstallment: "",
-    installmentAmount: "0",
-    advancePayment: "0",
-    approvalDate: new Date(),
-    repaymentStartDate: new Date(),
-    paymentMethod: "",
-    repaymentMethod: "monthly",
-    owner: userIdString,
+    name: "", customerId: "", loanId: "", email: "", phone: "", loanAmount: "", processingFee: "",
+    interest: "", totalInstallment: "", installmentAmount: "0", advancePayment: "0", approvalDate: new Date(),
+    repaymentStartDate: new Date(), paymentMethod: "", repaymentMethod: "monthly", owner: userIdString,
   };
   const [formData, setFormData] = useState(intialData);
   const calculateInstallmentAmount = () => {
     const amount = parseFloat(formData.loanAmount) || 0;
-    const fee = parseFloat(formData.processingFee) || 0;
     const installments = parseInt(formData.totalInstallment) || 1;
     const advance = parseFloat(formData.advancePayment) || 0;
-    const interestRate = parseFloat(formData.interest) || 0;
+
 
     let yearlyRate = 0;
-    switch (formData.repaymentMethod) {
-      case "daily":
-        yearlyRate = interestRate * 365;
-        break;
-      case "weekly":
-        yearlyRate = interestRate * 52;
-        break;
-      case "monthly":
-        yearlyRate = interestRate * 12;
-        break;
-    }
 
-    const totalAmount = amount + fee;
-    const principalAfterAdvance = totalAmount - advance;
-    const interestAmount = principalAfterAdvance * (interestRate / 100);
-    const totalWithInterest = principalAfterAdvance + interestAmount;
-    const installmentAmount = totalWithInterest / installments;
+
+
+    const principalAfterAdvance = amount - advance;
+    const installmentAmount = principalAfterAdvance / installments;
 
     return {
       installmentAmount: installmentAmount.toFixed(2),
@@ -86,12 +49,7 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
     };
   };
 
-  const generateEmiHistory = (
-    startDate,
-    repaymentMethod,
-    totalInstallments,
-    advancePayment
-  ) => {
+  const generateEmiHistory = (startDate, repaymentMethod, totalInstallments, advancePayment) => {
     const emiHistory = [];
     const installmentAmount = parseFloat(formData.installmentAmount) || 0;
 
@@ -140,17 +98,10 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
 
       const { installmentAmount } = calculateInstallmentAmount();
 
-      const emiHistory =
-        newData.repaymentStartDate &&
-        newData.repaymentMethod &&
-        newData.totalInstallment
-          ? generateEmiHistory(
-              new Date(newData.repaymentStartDate),
-              newData.repaymentMethod,
-              parseInt(newData.totalInstallment),
-              parseFloat(newData.advancePayment) || 0
-            )
-          : [];
+      const emiHistory = newData.repaymentStartDate && newData.repaymentMethod && newData.totalInstallment
+        ? generateEmiHistory(
+          new Date(newData.repaymentStartDate), newData.repaymentMethod, parseInt(newData.totalInstallment),
+          parseFloat(newData.advancePayment) || 0) : [];
 
       return {
         ...newData,
@@ -220,14 +171,18 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader className="bg-blue-100 p-4 rounded-t-lg">
-          <DialogTitle className="text-xl font-bold text-blue-800">
+    <div className="fixed top-0 left-0 h-screen w-screen flex items-center justify-center bg-gray-900 bg-opacity-50 z-30"
+    >
+      <div className="max-w-2xl h-[96%] bg-white  rounded-lg pb-2">
+        <div className=" p-4 rounded-t-lg flex items-center justify-between" >
+          <div className="text-xl font-bold text-blue-800">
             Add Loan Details
-          </DialogTitle>
-        </DialogHeader>
-        <div className="bg-gray-50 p-4 rounded-lg">
+          </div>
+          <div className=" bg-black rounded cursor-pointer" onClick={onClose}>
+            <X className="text-white font-bold" />
+          </div>
+        </div>
+        <div className="scroll_Bar p-4 rounded-lg overflow-y-auto h-[89%] ">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name *</Label>
@@ -317,8 +272,8 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
                 {formData.repaymentMethod === "monthly"
                   ? "12"
                   : formData.repaymentMethod === "weekly"
-                  ? "52"
-                  : "365"}{" "}
+                    ? "52"
+                    : "365"}{" "}
                 = {yearlyRate}%
               </div>
             </div>
@@ -348,8 +303,10 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
                 type="number"
                 placeholder="Enter Total Installment"
                 value={formData.totalInstallment}
-                onChange={(e) =>
-                  handleInputChange("totalInstallment", e.target.value)
+                onChange={(e) => {
+                  handleInputChange("totalInstallment", e.target.value);
+                  calculateInstallmentAmount();
+                }
                 }
               />
             </div>
@@ -361,8 +318,10 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
                 type="number"
                 placeholder="Enter Advance Payment"
                 value={formData.advancePayment}
-                onChange={(e) =>
-                  handleInputChange("advancePayment", e.target.value)
+                onChange={(e) => {
+                  handleInputChange("advancePayment", e.target.value);
+                  calculateInstallmentAmount();
+                }
                 }
               />
             </div>
@@ -468,7 +427,7 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
             </Button>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }

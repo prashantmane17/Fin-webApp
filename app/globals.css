@@ -80,3 +80,29 @@
     @apply bg-background text-foreground;
   }
 }
+.scroll_Bar {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #6c5ce7 #dfe6e9; /* Thumb color and track color */
+}
+
+/* WebKit Browsers (e.g., Chrome, Edge, Safari) */
+.scroll_Bar::-webkit-scrollbar {
+  width: 10px; 
+}
+
+.scroll_Bar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+
+.scroll_Bar::-webkit-scrollbar-thumb {
+  background-color: #6c5ce7; 
+  border-radius: 10px;
+  border: 3px solid #dfe6e9; 
+}
+
+.scroll_Bar::-webkit-scrollbar-button{
+  display: none; 
+  visibility: hidden;
+}
+

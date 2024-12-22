@@ -107,12 +107,12 @@ export default function App() {
             <Plus className="w-4 h-4 mr-2" />
             Add Loan
           </Button>
-          <AddLoanModal
-            open={isModalOpen}
+
+          {isModalOpen && (<AddLoanModal
             onClose={() => setIsModalOpen(false)}
             setloan={setLoadLoans}
             ownerid={userData.id}
-          />
+          />)}
         </div>
 
         <div className=" md:hidden">
