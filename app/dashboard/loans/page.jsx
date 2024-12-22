@@ -110,7 +110,6 @@ export default function App() {
 
           {isModalOpen && (<AddLoanModal
             onClose={() => setIsModalOpen(false)}
-            setloan={setLoadLoans}
             ownerid={userData.id}
           />)}
         </div>

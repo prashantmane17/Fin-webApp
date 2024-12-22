@@ -21,11 +21,34 @@ import { Bounce } from "react-toastify";
 import { addLoanDetails } from "@/axios/loanApi";
 import { useUser } from "@/context/UserContext";
 
-export function AddLoanModal({ open, onClose, setloan, ownerid }) {
-  const { setLoanData, userData } = useUser();
+export function AddLoanModal({ onClose, ownerid }) {
+  const { setLoanData, userData, loanData } = useUser();
+  const [newloanId, setNewloanId] = useState(2001);
+  const [newCustId, setNewCustId] = useState(1001);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+
+  let loanName = loanData.map((item) => {
+    return {
+      name: item.name,
+      custId: item.customerId
+    };
+  });
+
+  let loanCustId = loanData.map((item) => item.customerId);
+  let loanIds = loanData.map((item) => item.loanId);
+
+  let nextCustomerId = loanCustId.length > 0
+    ? Math.max(...loanCustId.map(id => parseInt(id.replace('Cust-', '')))) + 1
+    : 1001;
+
+  let nextLoanId = loanIds.length > 0
+    ? Math.max(...loanIds.map(id => parseInt(id.replace('LN-', '')))) + 1
+    : 1001;
+
   const userIdString = String(userData.id);
   let intialData = {
-    name: "", customerId: "", loanId: "", email: "", phone: "", loanAmount: "", processingFee: "",
+    name: "", customerId: `CUST-${nextCustomerId}`, loanId: `LN-${nextLoanId}`, email: "", phone: "", loanAmount: "", processingFee: "",
     interest: "", totalInstallment: "", installmentAmount: "0", advancePayment: "0", approvalDate: new Date(),
     repaymentStartDate: new Date(), paymentMethod: "", repaymentMethod: "monthly", owner: userIdString,
   };
@@ -91,7 +114,11 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
 
     return emiHistory;
   };
-
+  const handleSelectName = (name, id) => {
+    handleInputChange("name", name);
+    handleInputChange("customerId", id);
+    setShowDropdown(false);
+  };
   const handleInputChange = (field, value) => {
     setFormData((prev) => {
       const newData = { ...prev, [field]: value };
@@ -184,24 +211,50 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
         </div>
         <div className="scroll_Bar p-4 rounded-lg overflow-y-auto h-[89%] ">
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
+            <div className="space-y-2 relative">
               <Label htmlFor="name">Name *</Label>
               <Input
                 id="name"
-                placeholder="Select Or Enter Name"
+                placeholder="Select or Enter Name"
                 value={formData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
+                onClick={() => setShowDropdown(true)}
+                onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+                onChange={(e) => {
+                  handleInputChange("name", e.target.value);
+                  setShowDropdown(false)
+                }}
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               />
+
+              {showDropdown && (
+                <div
+                  className="absolute left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto z-10"
+                  onMouseDown={(e) => e.preventDefault()} // Prevents input blur when clicking
+                >
+                  {loanName.map((item, index) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        handleSelectName(item.name, item.custId);
+                      }}
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                    >
+                      {item.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+
             </div>
             <div className="space-y-2">
               <Label htmlFor="customerId">Customer ID *</Label>
               <Input
                 id="customerId"
                 value={formData.customerId}
-                placeholder="CUST-86384"
-                onChange={(e) =>
-                  handleInputChange("customerId", e.target.value)
-                }
+                placeholder="CUST-1001"
+                readOnly
+
               />
             </div>
             <div className="space-y-2">
@@ -210,7 +263,7 @@ export function AddLoanModal({ open, onClose, setloan, ownerid }) {
                 id="loanId"
                 placeholder="LN-85954"
                 value={formData.loanId}
-                onChange={(e) => handleInputChange("loanId", e.target.value)}
+                readOnly
               />
             </div>
             <div className="space-y-2">
