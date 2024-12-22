@@ -1,8 +1,17 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Progress } from "@/components/ui/progress";
-import { IndianRupee, TrendingUp, Calendar } from "lucide-react";
+import { IndianRupee, TrendingUp, Calendar } from 'lucide-react';
+import { BarChart, Bar, ResponsiveContainer } from 'recharts';
+
+const data = [
+  { name: 'Jan', value: 400 },
+  { name: 'Feb', value: 300 },
+  { name: 'Mar', value: 500 },
+  { name: 'Apr', value: 280 },
+  { name: 'May', value: 590 },
+  { name: 'Jun', value: 430 }
+];
 
 export function InvestmentSummary() {
   return (
@@ -17,7 +26,13 @@ export function InvestmentSummary() {
         <CardContent>
           <div className="text-2xl font-bold">₹2,50,000</div>
           <p className="text-xs text-muted-foreground mt-1">Across 3 schemes</p>
-          {/* <Progress value={75} className="mt-3" /> */}
+          <div className="h-[60px] mt-4">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data}>
+                <Bar dataKey="value" fill="#8884d8" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </CardContent>
       </Card>
 
@@ -31,7 +46,13 @@ export function InvestmentSummary() {
           <p className="text-xs text-muted-foreground mt-1">
             +12.5% return rate
           </p>
-          {/* <Progress value={65} className="mt-3" /> */}
+          <div className="h-[60px] mt-4">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data}>
+                <Bar dataKey="value" fill="#82ca9d" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </CardContent>
       </Card>
 
@@ -45,9 +66,18 @@ export function InvestmentSummary() {
           <p className="text-xs text-muted-foreground mt-1">
             Member since Aug 2022
           </p>
-          {/* <Progress value={45} className="mt-3" /> */}
+          <div className="mt-4 flex items-end space-x-1">
+            {[1, 2, 3, 4, 5, 6].map((month) => (
+              <div
+                key={month}
+                className="bg-primary/10 rounded-sm w-1/6"
+                style={{ height: `${month * 10}px` }}
+              ></div>
+            ))}
+          </div>
         </CardContent>
       </Card>
     </div>
   );
 }
+

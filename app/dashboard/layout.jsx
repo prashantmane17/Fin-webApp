@@ -6,7 +6,7 @@ export default function RootLayout({ children }) {
     <>
       <InvestmentProvider>
         <div className="flex flex-col md:flex-row h-screen bg-muted/5">
-          <Sidebar className="md:w-[19vw] border-r bg-background block" />
+          <Sidebar className=" border-r bg-background block" />
           <div className="h-screen overflow-y-auto w-full">{children}</div>
         </div>
       </InvestmentProvider>

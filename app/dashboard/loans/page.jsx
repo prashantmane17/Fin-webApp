@@ -78,10 +78,10 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6 flex flex-col">
       <div
-        className="w-100% mx-auto flex-grow flex flex-col"
+        className="w-100% flex-grow flex flex-col"
         style={{ maxHeight: "calc(100vh - 48px)" }}
       >
-        <div className="flex p-6 flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <div className="flex pb-6 flex-row justify-between items-start sm:items-center  gap-4">
           <div className="flex items-center gap-2">
             <div className="bg-blue-600 text-white p-2 rounded">
               <svg
@@ -115,10 +115,10 @@ export default function App() {
           />
         </div>
 
-        <div className=" lg:hidden">
+        <div className=" md:hidden">
           <CardView loans={loanData} isLoading={loanisLoading} />
         </div>
-        <div className="hidden lg:block bg-white rounded-lg shadow mb-3">
+        <div className="hidden md:block bg-white rounded-lg shadow mb-3">
           <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
               <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -138,7 +138,7 @@ export default function App() {
                 <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                 <Input
                   placeholder="Search..."
-                  className="pl-9 w-full sm:w-[300px]"
+                  className="pl-9 w-full sm:w-[20vw]"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   ownerid={userData.id}
@@ -161,14 +161,14 @@ export default function App() {
               </span>
               <Button variant="outline" className="gap-2">
                 <Download className="w-4 h-4" />
-                Export
+                <span className="hidden lg:block">Export</span>
               </Button>
             </div>
           </div>
         </div>
 
         {/* Table */}
-        <div className="hidden lg:block bg-white rounded-lg shadow flex-grow overflow-auto">
+        <div className="hidden md:block bg-white rounded-lg shadow flex-grow overflow-auto">
           <Table className="relative">
             <TableHeader className="sticky top-0 z-10">
               <TableRow>
@@ -327,7 +327,7 @@ export default function App() {
         </div>
 
         {/* Pagination */}
-        <div className="hidden mt-2 lg:flex justify-between items-center">
+        <div className="hidden mt-2 md:flex justify-between items-center">
           <div>
             Showing {(currentPage - 1) * parseInt(entriesPerPage) + 1} to{" "}
             {Math.min(

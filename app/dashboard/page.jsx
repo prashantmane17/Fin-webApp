@@ -74,6 +74,14 @@ export default function Dashboard() {
     (total, item) => total + parseInt(item.amount, 10),
     0
   );
+  const total =
+    (Number(totalInvestment) || 0) -
+    (Number(totalWithdraws) || 0) +
+    (Number(totalProcessingFee) || 0) +
+    (Number(totalInterest) || 0);
+
+  // Format the result
+  const formattedTotal = total.toFixed(2);
   return (
     <main className="min-h-screen bg-background p-8">
       <div className=" mx-auto space-y-8">
@@ -124,7 +132,7 @@ export default function Dashboard() {
                   <div className="flex items-center">
                     <IndianRupee className="h-4 w-3" />
                     <p className="text-lg font-bold">
-                      {totalInvestment - totalWithdraws}
+                      {formattedTotal}
                     </p>
                   </div>
                 </div>

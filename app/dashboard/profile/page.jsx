@@ -2,7 +2,6 @@
 
 import { ProfileHeader } from "@/components/profile/profile-header";
 import { InvestmentSummary } from "@/components/profile/investment-summary";
-import { SchemeList } from "@/components/profile/scheme-list";
 
 export default function ProfilePage() {
   return (
@@ -10,7 +9,7 @@ export default function ProfilePage() {
       <div className="max-w-6xl mx-auto space-y-8">
         <ProfileHeader />
         <InvestmentSummary />
-        <SchemeList />
+      
       </div>
     </main>
   );
