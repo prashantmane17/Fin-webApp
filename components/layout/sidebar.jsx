@@ -41,7 +41,7 @@ export function Sidebar({ className }) {
               <PiggyBank className="h-6 w-6 text-indigo-500" />
               {isExpanded && (
                 <h2 className="text-lg font-semibold text-gray-800">
-                  ChitFund Pro
+                  Evoxcel
                 </h2>
               )}
             </div>

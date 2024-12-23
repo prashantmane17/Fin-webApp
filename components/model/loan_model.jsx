@@ -23,8 +23,6 @@ import { useUser } from "@/context/UserContext";
 
 export function AddLoanModal({ onClose, ownerid }) {
   const { setLoanData, userData, loanData } = useUser();
-  const [newloanId, setNewloanId] = useState(2001);
-  const [newCustId, setNewCustId] = useState(1001);
   const [showDropdown, setShowDropdown] = useState(false);
 
 
@@ -79,9 +77,11 @@ export function AddLoanModal({ onClose, ownerid }) {
     // Add the advance payment as the first EMI entry
     if (advancePayment > 0) {
       emiHistory.push({
-        date: new Date(startDate).toISOString().split("T")[0], // Use the repayment start date for advance payment
+        date: new Date(startDate).toISOString().split("T")[0],
         amount: advancePayment.toFixed(2),
-        transactionId: "TXN00000", // Indicate advance payment with a unique ID
+        transactionId: "TXN00000",
+        paidDate: new Date(startDate).toISOString().split("T")[0],
+        paidStatus: "Paid",
       });
     }
 
@@ -109,6 +109,8 @@ export function AddLoanModal({ onClose, ownerid }) {
         date: currentDate.toISOString().split("T")[0],
         amount: installmentAmount.toFixed(2),
         transactionId: `TXN${i.toString().padStart(5, "0")}`,
+        paidDate: null,
+        paidStatus: "Due",
       });
     }
 

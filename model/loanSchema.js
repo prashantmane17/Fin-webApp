@@ -12,6 +12,14 @@ const emiHistorySchema = new mongoose.Schema({
   },
   paidDate: {
     type: Date,
+    default: null,
+  },
+  paidStatus: {
+    type: String,
+    default: "Due"
+  },
+  method: {
+    type: String,
   },
 });
 

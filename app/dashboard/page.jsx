@@ -47,22 +47,28 @@ export default function Dashboard() {
     const totalInstallment = parseInt(item.totalInstallment, 10);
     const repaymentMethod = item.repaymentMethod;
     const loanInterest = parseInt(item.interest, 10);
-    let timeInYears;
+    let timeInMonths;
 
+    // Determine the loan duration in months based on repayment method
     if (repaymentMethod === "daily") {
-      timeInYears = totalInstallment / 365;
+      timeInMonths = totalInstallment / 30; // Assuming 30 days in a month
     } else if (repaymentMethod === "weekly") {
-      timeInYears = totalInstallment / 52;
+      timeInMonths = totalInstallment / 4; // Assuming 4 weeks in a month
     } else if (repaymentMethod === "monthly") {
-      timeInYears = totalInstallment / 12;
+      timeInMonths = totalInstallment;
     } else {
       throw new Error("Invalid repayment method");
     }
 
-    const interest = (loanAmount * timeInYears * loanInterest) / 100;
-    const totalAmount = Number(total) + Number(interest);
-    return totalAmount.toFixed(2);
+    // Calculate the total interest without compounding
+    const totalInterestForLoan = (loanAmount * loanInterest * timeInMonths) / 100;
+
+    // Add the interest for this loan to the total
+    const totalAmount = Number(total) + totalInterestForLoan;
+
+    return parseFloat(totalAmount.toFixed(2));
   }, 0);
+
 
 
 
@@ -169,7 +175,7 @@ export default function Dashboard() {
                 </p>
                 <div className="flex items-center gap-2">
                   <IndianRupee className="h-4 w-4" />
-                  <p className="text-2xl font-bold">120,000.0</p>
+                  <p className="text-2xl font-bold">0</p>
                 </div>
               </div>
             </div>
@@ -218,7 +224,7 @@ export default function Dashboard() {
                 </p>
                 <div className="flex items-center gap-2">
                   <IndianRupee className="h-4 w-4" />
-                  <p className="text-2xl font-bold">20,000.0</p>
+                  <p className="text-2xl font-bold">0</p>
                 </div>
               </div>
             </div>
