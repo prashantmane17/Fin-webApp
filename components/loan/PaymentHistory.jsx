@@ -98,7 +98,7 @@ export function PaymentHistory({ loanData }) {
                                 <TableRow key={payment._id}>
                                     <TableCell className="font-medium">{formatDate(payment.date)}</TableCell>
                                     <TableCell className="font-mono text-sm">{payment.transactionId}</TableCell>
-                                    <TableCell>---</TableCell> {/* Leave empty for method */}
+                                    <TableCell>---</TableCell>
                                     <TableCell>₹{Number(loanData.installmentAmount).toFixed(2)}</TableCell>
                                     <TableCell>
                                         <Badge variant="secondary" className="bg-green-100 text-green-700">

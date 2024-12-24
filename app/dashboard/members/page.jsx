@@ -108,6 +108,18 @@ export default function MembersPage() {
               <Users className="w-6 h-6" />
             </div>
             <h1 className="text-2xl font-semibold">Members</h1>
+            <Button
+              onClick={toggleViewMode}
+              variant="outline"
+              className="gap-2"
+            >
+              {viewMode === "list" ? (
+                <LayoutGrid className="w-4 h-4" />
+              ) : (
+                <List className="w-4 h-4" />
+              )}
+              {viewMode === "list" ? "Card View" : "List View"}
+            </Button>
           </div>
           <Button
             className="bg-blue-600 hover:bg-blue-700"
@@ -160,18 +172,7 @@ export default function MembersPage() {
                 <Download className="w-4 h-4" />
                 Export
               </Button>
-              <Button
-                onClick={toggleViewMode}
-                variant="outline"
-                className="gap-2"
-              >
-                {viewMode === "list" ? (
-                  <LayoutGrid className="w-4 h-4" />
-                ) : (
-                  <List className="w-4 h-4" />
-                )}
-                {viewMode === "list" ? "Card View" : "List View"}
-              </Button>
+
             </div>
           </div>
         </div>

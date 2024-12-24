@@ -140,9 +140,9 @@ const Page = () => {
             <TabsTrigger value="history" className="text-base">
               History
             </TabsTrigger>
-            <TabsTrigger value="documents" className="text-base">
+            {/* <TabsTrigger value="documents" className="text-base">
               Documents
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
 
           <TabsContent value="general">
@@ -157,9 +157,9 @@ const Page = () => {
             <PaymentHistory loanData={initialLoanData} />
           </TabsContent>
 
-          <TabsContent value="documents">
+          {/* <TabsContent value="documents">
             <Documents loanData={initialLoanData} />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
     </div>

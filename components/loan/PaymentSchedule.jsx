@@ -50,8 +50,8 @@ export function PaymentSchedule({ loanData }) {
                         Download
                     </Button>
                 </div>
-                <Table className="">
-                    <div className="rounded-md border w-full h-[35vh] overflow-y-auto">
+                <div className="rounded-md border w-full h-[35vh] overflow-y-auto">
+                    <Table className="">
                         <TableHeader>
                             <TableRow className="sticky top-0 z-10 bg-white">
                                 <TableHead className="w-[50px]">#</TableHead>
@@ -103,9 +103,9 @@ export function PaymentSchedule({ loanData }) {
                                 return tableRow;
                             })}
                         </TableBody>
-                    </div>
-                </Table>
+                    </Table>
+                </div>
             </CardContent>
-        </Card>
+        </Card >
     );
 }

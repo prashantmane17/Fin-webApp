@@ -14,7 +14,7 @@ const sidebarNavItems = [
   { title: "Loans", icon: Dock, href: "/dashboard/loans" },
   { title: "Investment", icon: IndianRupee, href: "/dashboard/investment" },
   { title: "Withdrawn", icon: CircleDollarSign, href: "/dashboard/withdrawn" },
-  { title: "Payments", icon: IndianRupee, href: "/dashboard/payments" },
+  // { title: "Payments", icon: IndianRupee, href: "/dashboard/payments" },
   { title: "Members", icon: Users, href: "/dashboard/members" },
 ];
 
